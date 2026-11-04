@@ -139,7 +139,7 @@
       position: absolute;
       inset: 0;
       overflow: hidden;
-      background: linear-gradient(180deg, #f2eee4 0 68%, #d7c6a9 68% 100%);
+      background: linear-gradient(180deg, #f2eee4 0 60%, #d7c6a9 60% 100%);
       --room-accent: #d3bda0;
       --wall: #f2eee4;
     }
@@ -149,7 +149,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 69%;
+      height: 61%;
       content: "";
       background-image: linear-gradient(#b8a78d0b 1px, transparent 1px), linear-gradient(90deg, #b8a78d0b 1px, transparent 1px);
       background-size: 34px 34px;
@@ -157,7 +157,7 @@
     .floor {
       position: absolute;
       z-index: -1;
-      top: 68%;
+      top: 60%;
       right: 0;
       bottom: 0;
       left: 0;
@@ -301,13 +301,15 @@
       border: 0;
       background: transparent;
       cursor: pointer;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -100%) scale(.8);
+      transform-origin: center bottom;
       transition: left .55s cubic-bezier(.2,.8,.2,1), top .55s cubic-bezier(.2,.8,.2,1);
       filter: drop-shadow(0 5px 3px #463b2d26);
     }
     .actor .head {
       position: absolute;
-      top: 4px;
+      z-index: 1;
+      top: 8px;
       left: 14px;
       width: 42px;
       height: 48px;
@@ -317,7 +319,7 @@
     }
     .actor .hair {
       position: absolute;
-      z-index: 1;
+      z-index: 0;
       top: 0;
       left: 10px;
       width: 50px;
@@ -348,21 +350,35 @@
     .actor .face {
       position: absolute;
       z-index: 2;
-      top: 23px;
-      left: 20px;
-      width: 31px;
-      height: 18px;
-      color: #41352d;
-      font-size: 13px;
-      line-height: 16px;
-      letter-spacing: 2px;
-      text-align: center;
+      top: 25px;
+      left: 19px;
+      width: 34px;
+      height: 23px;
+    }
+    .actor .face i {
+      position: absolute;
+      top: 3px;
+      left: 5px;
+      width: 4px;
+      height: 5px;
+      border-radius: 50%;
+      background: #352c29;
+    }
+    .actor .face i + i { left: 24px; }
+    .actor .face b {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 10px;
+      height: 5px;
+      border-bottom: 2px solid #a85852;
+      border-radius: 0 0 50% 50%;
     }
     .actor .glasses {
       position: absolute;
       z-index: 3;
-      top: 21px;
-      left: 17px;
+      top: 23px;
+      left: 15px;
       width: 38px;
       height: 14px;
       border: 2px solid #28352f;
@@ -411,13 +427,17 @@
     .actor.koyoshi .head { top: 0; left: 9px; width: 62px; height: 62px; border-radius: 48%; }
     .actor.koyoshi .hair { top: -4px; left: 5px; width: 70px; height: 38px; border-radius: 50% 50% 25% 25%; }
     .actor.koyoshi .hair::before, .actor.koyoshi .hair::after { display: none; }
-    .actor.koyoshi .face { top: 25px; left: 19px; width: 43px; font-size: 19px; letter-spacing: 3px; }
+    .actor.koyoshi .face { top: 25px; left: 18px; width: 45px; height: 27px; }
+    .actor.koyoshi .face i { top: 4px; left: 5px; width: 8px; height: 9px; border: 2px solid #352c29; background: #fffdf8; }
+    .actor.koyoshi .face i + i { top: 1px; left: 31px; width: 7px; height: 11px; }
+    .actor.koyoshi .face b { top: 15px; left: 15px; width: 17px; height: 10px; border: 0; border-radius: 45% 45% 55% 55%; background: #713e3c; }
+    .actor.koyoshi .face b::after { position: absolute; right: 2px; bottom: 0; width: 7px; height: 4px; border-radius: 50%; background: #f08e86; content: ""; }
     .actor.koyoshi .glasses { display: none; }
     .actor.koyoshi .body { top: 60px; left: 17px; width: 46px; height: 50px; border-radius: 13px; background: #7191a0; }
     .actor.koyoshi .legs { top: 108px; left: 24px; }
     .actor.koyoshi .shoes { top: 130px; left: 18px; }
     .actor.is-walking .body { animation: bob .22s ease-in-out infinite alternate; }
-    .actor.is-sleeping { transform: translate(-50%, -50%) rotate(90deg) scale(.8); }
+    .actor.is-sleeping { transform: translate(-50%, -100%) rotate(90deg) scale(.65); }
     .actor.is-sleeping .body { background: #8197ae; }
     @keyframes bob { to { translate: 0 -4px; } }
     @keyframes pop { 0% { opacity: 0; transform: translate(-50%, 6px) scale(.9); } 100% { opacity: 1; transform: translate(-50%, 0) scale(1); } }
@@ -425,43 +445,61 @@
     .penguin {
       position: absolute;
       z-index: 3;
-      width: 44px;
-      height: 53px;
+      width: 54px;
+      height: 62px;
       display: grid;
       place-items: center;
-      border: 0;
-      border-radius: 48% 48% 43% 43%;
+      border: 2px solid #263a3e;
+      border-radius: 48% 48% 44% 44%;
       color: #293d42;
-      background: radial-gradient(ellipse at 50% 68%, #fff8ea 0 33%, transparent 34%), #354b50;
-      box-shadow: 0 5px 0 #24373a2b, 0 8px 10px #594d3d17;
+      background: radial-gradient(ellipse at 50% 63%, #fff8ec 0 37%, transparent 38%), radial-gradient(ellipse at 32% 28%, #62767a 0 2%, transparent 3%), #354b50;
+      box-shadow: inset 3px 4px 7px #ffffff28, inset -4px -5px 9px #172a2c2b, 0 5px 0 #24373a2b, 0 8px 10px #594d3d17;
       font-size: 9px;
       cursor: pointer;
       transition: transform .2s;
     }
     .penguin::before {
       position: absolute;
-      top: 23px;
-      left: 19px;
+      z-index: 2;
+      top: 25px;
+      left: 22px;
       width: 0;
       height: 0;
-      border-top: 5px solid #eaa55a;
-      border-right: 4px solid transparent;
-      border-left: 4px solid transparent;
+      border-top: 6px solid #eaa55a;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
       content: "";
     }
     .penguin::after {
       position: absolute;
-      bottom: -3px;
-      left: 8px;
-      width: 28px;
-      height: 5px;
-      border-radius: 50%;
-      background: #d89150;
-      box-shadow: 0 0 0 2px #fff5;
+      z-index: -1;
+      bottom: -5px;
+      left: 7px;
+      width: 36px;
+      height: 9px;
+      border-radius: 50% 50% 45% 45%;
+      background: linear-gradient(90deg, #d89150 0 43%, transparent 44% 55%, #d89150 56%);
       content: "";
     }
     .penguin:hover { transform: translateY(-5px) rotate(-5deg); }
-    .penguin span { position: absolute; top: 17px; z-index: 1; color: white; letter-spacing: 9px; transform: translateX(4px); }
+    .penguin .penguin-eyes { position: absolute; z-index: 2; top: 18px; left: 18px; color: #26363a; font-size: 10px; letter-spacing: 7px; }
+    .penguin .penguin-belly { position: absolute; top: 28px; left: 13px; width: 25px; height: 26px; border-radius: 50% 50% 44% 44%; background: #fff8ec; }
+    .soccer-ball {
+      position: absolute;
+      z-index: 3;
+      left: 59%;
+      top: 92%;
+      width: 39px;
+      aspect-ratio: 1;
+      padding: 0;
+      border: 2px solid #d5d0c3;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, #303b37 0 17%, transparent 18%), conic-gradient(from 18deg, #fffdf8 0 12%, #323c38 12% 21%, #fffdf8 21% 42%, #323c38 42% 51%, #fffdf8 51% 72%, #323c38 72% 81%, #fffdf8 81%);
+      box-shadow: 0 4px 0 #5f594c37, 0 8px 10px #594d3d20;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    .soccer-ball:hover { transform: scale(1.12) rotate(15deg); }
 
     .speech {
       position: absolute;
@@ -636,10 +674,10 @@
           <div class="lamp" aria-hidden="true"></div>
           <div id="roomObjects"></div>
           <button class="actor iwan" id="iwan" type="button" aria-label="IWan, click to interact" style="left:53%;top:76%">
-            <span class="hair"></span><span class="head"></span><span class="face">•‿•</span><span class="glasses"></span><span class="body"></span><span class="legs"></span><span class="shoes"></span>
+            <span class="hair"></span><span class="head"></span><span class="face"><i></i><i></i><b></b></span><span class="glasses"></span><span class="body"></span><span class="legs"></span><span class="shoes"></span>
           </button>
           <button class="actor koyoshi" id="koyoshi" type="button" aria-label="Koyoshi, click to talk" style="left:78%;top:76%">
-            <span class="hair"></span><span class="head"></span><span class="face">•ᴗ•</span><span class="glasses"></span><span class="body"></span><span class="legs"></span><span class="shoes"></span>
+            <span class="hair"></span><span class="head"></span><span class="face"><i></i><i></i><b></b></span><span class="glasses"></span><span class="body"></span><span class="legs"></span><span class="shoes"></span>
           </button>
           <div class="plant" aria-hidden="true">🪴</div>
         </div>
@@ -705,6 +743,7 @@
             { kind: "table", label: "Tea table", icon: "☕", action: "tea", x: 69, y: 66 },
           ],
           penguins: [[54, 75], [88, 75]],
+          soccerBall: true,
         },
         bedroom: {
           title: "The softest place to land",
@@ -739,6 +778,7 @@
         relax: ["A soft sofa and nowhere to be.", "This is a very good place to sit.", "A little quiet does wonders."],
         tea: ["Tea for two? Koyoshi says yes.", "The tea is warm and the afternoon is slow.", "Koyoshi made it. It is... surprisingly good."],
         penguin: ["The penguins have important penguin business.", "One penguin waddles over for a hello.", "Tiny flippers, enormous opinions."],
+        soccer: ["IWan takes a gentle little shot!", "Goal! The penguins are surprisingly good referees.", "Koyoshi celebrates like it was the World Cup."],
       };
       const penguinLines = ["Honk!", "Waddle waddle.", "I am the captain now.", "Have you seen my fish?", "Penguin meeting. Very important."];
       const koyoshiLines = ["I made tea! I only spilled a tiny bit.", "IWan, do you think penguins know it's cold?", "I was helping. This is what helping looks like.", "You look very professor-y today.", "I saved you the last dumpling. Probably."];
@@ -803,9 +843,13 @@
 
       function moveTo(target, x, y, callback) {
         clearTimeout(walkTimer);
+        const stageHeight = stage.clientHeight;
+        const floorTop = stageHeight * .60;
+        const visualHeight = target.offsetHeight * .8;
+        const minY = ((floorTop + visualHeight) / stageHeight) * 100;
         target.classList.add("is-walking");
         target.style.left = `${Math.max(7, Math.min(93, x))}%`;
-        target.style.top = `${Math.max(44, Math.min(86, y))}%`;
+        target.style.top = `${Math.max(minY, Math.min(99, y))}%`;
         walkTimer = window.setTimeout(() => {
           target.classList.remove("is-walking");
           callback?.();
@@ -822,9 +866,10 @@
           relax: "Taking it nice and slow",
           tea: "Having tea with Koyoshi",
           penguin: "Checking in with the penguins",
+          soccer: "Having a little kick-about",
         }[action] || "Enjoying a slow day";
         minutes += action === "sleep" ? 90 : action === "work" ? 55 : 20;
-        energy = Math.max(12, Math.min(100, energy + (action === "sleep" ? 35 : action === "work" ? -17 : -5)));
+        energy = Math.max(12, Math.min(100, energy + (action === "sleep" ? 35 : action === "work" || action === "soccer" ? -17 : -5)));
         cozy = Math.max(10, Math.min(100, cozy + (action === "work" ? -5 : 10)));
         setMood();
         updateClock();
@@ -863,15 +908,22 @@
           penguin.style.left = `${x}%`;
           penguin.style.top = `${y}%`;
           penguin.setAttribute("aria-label", `Penguin plush ${index + 1}`);
-          penguin.innerHTML = "<span>••</span>";
+          penguin.innerHTML = "<span class=\"penguin-eyes\">• •</span><span class=\"penguin-belly\"></span>";
           roomObjects.append(penguin);
         });
+        if (room.soccerBall) {
+          const ball = document.createElement("button");
+          ball.className = "soccer-ball";
+          ball.type = "button";
+          ball.setAttribute("aria-label", "Kick the soccer ball");
+          roomObjects.append(ball);
+        }
         koyoshi.hidden = roomName === "bedroom";
         const startingPositions = {
-          living: [53, 78, 78, 77],
-          bedroom: [62, 77, 80, 77],
-          study: [48, 77, 81, 77],
-          kitchen: [51, 77, 79, 77],
+          living: [53, 96, 78, 96],
+          bedroom: [62, 96, 80, 96],
+          study: [48, 96, 81, 96],
+          kitchen: [51, 96, 79, 96],
         }[roomName];
         iwan.style.left = `${startingPositions[0]}%`;
         iwan.style.top = `${startingPositions[1]}%`;
@@ -906,6 +958,18 @@
       });
 
       roomObjects.addEventListener("click", (event) => {
+        const ball = event.target.closest(".soccer-ball");
+        if (ball) {
+          const bounds = stage.getBoundingClientRect();
+          const ballBounds = ball.getBoundingClientRect();
+          const x = ((ballBounds.left + ballBounds.width / 2 - bounds.left) / bounds.width) * 100;
+          const y = ((ballBounds.top + ballBounds.height / 2 - bounds.top) / bounds.height) * 100;
+          moveTo(iwan, x - 5, y + 7, () => {
+            perform("soccer");
+            ball.animate([{ transform: "translateX(0) rotate(0)" }, { transform: "translateX(90px) rotate(500deg)" }], { duration: 650, easing: "ease-out" });
+          });
+          return;
+        }
         const penguin = event.target.closest(".penguin");
         if (penguin) {
           const message = penguinLines[Math.floor(Math.random() * penguinLines.length)];
