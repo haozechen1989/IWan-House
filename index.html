@@ -281,17 +281,39 @@
     .furniture.chair { right: 23%; top: 65%; width: 10%; height: 12%; background: #718b74; }
     .furniture.stove { left: 19%; top: 51%; width: 26%; height: 17%; background: #e7e0d4; }
     .furniture.counter { right: 13%; top: 56%; width: 31%; height: 15%; background: #bd926c; }
-    .furniture.sofa { left: 16%; top: 54%; width: 33%; height: 20%; background: #92a990; }
+    .furniture.sofa {
+      left: 16%;
+      top: 54%;
+      width: 33%;
+      height: 21%;
+      border: 0;
+      border-radius: 17px 17px 12px 12px;
+      background: linear-gradient(180deg, #a9bea3 0 24%, #8da78f 25% 72%, #78947d 73%);
+      box-shadow: inset 0 -5px #66816d80, 0 8px 0 #667c6240, 0 14px 18px #594d3d20;
+    }
+    .furniture.sofa::before {
+      position: absolute;
+      top: -20%;
+      left: 4%;
+      width: 92%;
+      height: 51%;
+      border-radius: 15px 15px 8px 8px;
+      background: linear-gradient(180deg, #a9bea3, #91aa93);
+      box-shadow: inset 0 3px #c4d2bc88, inset 0 -3px #708a7388;
+      content: "";
+    }
     .furniture.table { right: 18%; top: 61%; width: 25%; height: 12%; background: #ad805e; border-radius: 50%; }
     .furniture.television {
       width: 23%;
       height: 17%;
+      padding: 4px;
       border: 5px solid #594d40;
       border-radius: 8px;
       color: #f5d485;
-      background: linear-gradient(145deg, #61796e, #273a3b 70%);
-      font-size: clamp(15px, 2vw, 24px);
+      background: #594d40;
+      font-size: 11px;
       box-shadow: 0 5px 0 #594d3d, 0 10px 15px #594d3d27;
+      overflow: visible;
     }
     .furniture.television::before {
       position: absolute;
@@ -302,6 +324,74 @@
       border-bottom: 4px solid #594d40;
       border-left: 4px solid #594d40;
       content: "";
+    }
+    .tv-screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      border-radius: 2px;
+      background: #263639;
+      text-align: left;
+    }
+    .tv-picture { position: absolute; inset: 0; overflow: hidden; transition: background .35s ease; }
+    .tv-picture::before {
+      position: absolute;
+      right: -5%;
+      bottom: 0;
+      left: -5%;
+      height: 48%;
+      background: #1d2c31;
+      content: "";
+    }
+    .tv-picture[data-channel="jazz"] {
+      background: radial-gradient(ellipse at 50% 45%, #e8ab69 0 8%, transparent 9%), linear-gradient(180deg, #455d67, #a56d55 68%, #293538);
+    }
+    .tv-picture[data-channel="jazz"]::before {
+      height: 36%;
+      background: repeating-linear-gradient(90deg, #233238 0 8%, #39484a 8% 12%, #202e34 12% 20%);
+      clip-path: polygon(0 30%, 12% 30%, 12% 0, 17% 0, 17% 30%, 31% 30%, 31% 10%, 39% 10%, 39% 30%, 57% 30%, 57% 4%, 62% 4%, 62% 30%, 78% 30%, 78% 12%, 86% 12%, 86% 30%, 100% 30%, 100% 100%, 0 100%);
+    }
+    .tv-picture[data-channel="postrock"] {
+      background: linear-gradient(180deg, #8798ae, #e1ad91 63%, #596e78 64%);
+    }
+    .tv-picture[data-channel="postrock"]::before {
+      height: 64%;
+      background: linear-gradient(135deg, #485d70, #293e50);
+      clip-path: polygon(0 100%, 22% 25%, 39% 72%, 59% 0, 83% 75%, 100% 28%, 100% 100%);
+    }
+    .tv-picture[data-channel="jpop"] {
+      background: radial-gradient(circle at 50% 36%, #ffe1a3 0 13%, transparent 14%), linear-gradient(180deg, #f398ab, #a56eb0 66%, #4f527c);
+    }
+    .tv-picture[data-channel="jpop"]::before {
+      height: 45%;
+      background: repeating-linear-gradient(90deg, #414267 0 9%, #7670a0 9% 12%, #464568 12% 21%);
+      clip-path: polygon(0 25%, 8% 25%, 8% 0, 16% 0, 16% 25%, 28% 25%, 28% 12%, 34% 12%, 34% 25%, 50% 25%, 50% 0, 59% 0, 59% 25%, 72% 25%, 72% 10%, 81% 10%, 81% 25%, 100% 25%, 100% 100%, 0 100%);
+    }
+    .tv-caption {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 4px 5px;
+      color: #fffaf0;
+      background: linear-gradient(transparent, #172329d9);
+      font-size: 8px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-shadow: 0 1px 2px #172329;
+    }
+    .tv-badge {
+      position: absolute;
+      z-index: 1;
+      top: 4px;
+      left: 5px;
+      padding: 2px 4px;
+      border-radius: 3px;
+      color: white;
+      background: #273538b8;
+      font-size: 7px;
+      font-weight: 700;
     }
     .plant {
       position: absolute;
@@ -487,6 +577,12 @@
     .actor.koyoshi .body { top: 58px; left: 17px; width: 46px; height: 52px; border-radius: 13px; background: #7191a0; }
     .actor.koyoshi .legs { top: 108px; left: 24px; }
     .actor.koyoshi .shoes { top: 130px; left: 18px; }
+    .actor.koyoshi.is-silly { animation: silly-bounce .8s ease-in-out; }
+    @keyframes silly-bounce {
+      0%, 100% { transform: translate(-50%, -100%) scale(.8) rotate(0); }
+      30% { transform: translate(-50%, -100%) scale(.8) rotate(-8deg) translateY(-4px); }
+      65% { transform: translate(-50%, -100%) scale(.8) rotate(7deg); }
+    }
     .glasses {
       display: flex;
       align-items: center;
@@ -523,9 +619,10 @@
       border-radius: 48% 48% 44% 44%;
       color: #293d42;
       background: radial-gradient(ellipse at 50% 63%, #fff8ec 0 37%, transparent 38%), radial-gradient(ellipse at 32% 28%, #62767a 0 2%, transparent 3%), #354b50;
-      box-shadow: inset 3px 4px 7px #ffffff28, inset -4px -5px 9px #172a2c2b, 0 5px 0 #24373a2b, 0 8px 10px #594d3d17;
+      box-shadow: inset 3px 4px 7px #ffffff28, inset -4px -5px 9px #172a2c2b, 0 8px 12px #3f3c322e;
       font-size: 9px;
       cursor: pointer;
+      transform: translate(-50%, -100%);
       transition: transform .2s;
     }
     .penguin::before {
@@ -551,9 +648,15 @@
       background: linear-gradient(90deg, #d89150 0 43%, transparent 44% 55%, #d89150 56%);
       content: "";
     }
-    .penguin:hover { transform: translateY(-5px) rotate(-5deg); }
+    .penguin:hover { transform: translate(-50%, -105%) rotate(-5deg); }
     .penguin .penguin-eyes { position: absolute; z-index: 2; top: 18px; left: 18px; color: #26363a; font-size: 10px; letter-spacing: 7px; }
     .penguin .penguin-belly { position: absolute; top: 28px; left: 13px; width: 25px; height: 26px; border-radius: 50% 50% 44% 44%; background: #fff8ec; }
+    .penguin .penguin-wing { position: absolute; z-index: 1; top: 28px; width: 12px; height: 22px; border-radius: 50%; background: #304448; }
+    .penguin .penguin-wing.left { left: -5px; transform: rotate(-18deg); }
+    .penguin .penguin-wing.right { right: -5px; transform: rotate(18deg); }
+    .penguin .penguin-scarf { position: absolute; z-index: 2; top: 34px; left: 5px; width: 40px; height: 7px; border-radius: 4px; background: #e88e79; box-shadow: 0 1px 2px #172a2c55; }
+    .penguin[data-scarf="gold"] .penguin-scarf { background: #e2b95e; }
+    .penguin[data-scarf="blue"] .penguin-scarf { background: #83aeba; }
     .soccer-ball {
       position: absolute;
       z-index: 3;
@@ -824,7 +927,7 @@
             { kind: "table", label: "Tea table", icon: "☕", action: "tea", x: 69, y: 66 },
             { kind: "television", label: "Watch TV", icon: "▶", action: "watch", x: 71, y: 39 },
           ],
-          penguins: [[54, 75], [88, 75]],
+          penguins: [[43, 94], [89, 94]],
           soccerBall: true,
         },
         bedroom: {
@@ -833,7 +936,7 @@
             { kind: "bed", label: "Big cozy bed", icon: "☾", action: "sleep", x: 31, y: 64 },
             { kind: "desk", label: "Bedside table", icon: "▤", action: "relax", x: 75, y: 57 },
           ],
-          penguins: [[68, 76]],
+          penguins: [[68, 94]],
         },
         study: {
           title: "Ideas, notes & one good lamp",
@@ -841,7 +944,7 @@
             { kind: "desk", label: "Professor desk", icon: "▤", action: "work", x: 70, y: 56 },
             { kind: "chair", label: "Desk chair", icon: "♧", action: "work", x: 68, y: 72 },
           ],
-          penguins: [[25, 77], [87, 76]],
+          penguins: [[25, 94], [87, 94]],
         },
         kitchen: {
           title: "Something lovely is simmering",
@@ -849,7 +952,7 @@
             { kind: "stove", label: "Stove", icon: "♨", action: "cook", x: 31, y: 60 },
             { kind: "counter", label: "Kitchen counter", icon: "🥣", action: "cook", x: 71, y: 63 },
           ],
-          penguins: [[52, 77]],
+          penguins: [[52, 94]],
         },
       };
 
@@ -865,6 +968,12 @@
       };
       const penguinLines = ["Honk!", "Waddle waddle.", "I am the captain now.", "Have you seen my fish?", "Penguin meeting. Very important."];
       const koyoshiLines = ["I made tea! I only spilled a tiny bit.", "IWan, do you think penguins know it's cold?", "I was helping. This is what helping looks like.", "You look very professor-y today.", "I saved you the last dumpling. Probably."];
+      const sillyLines = ["Look, I can moonwalk!", "Koyoshi is practicing his victory dance.", "Was that a penguin? No, it was just me.", "Koyoshi does a very unnecessary little spin."];
+      const musicChannels = [
+        { id: "jazz", title: "Cozy jazz", chords: [[60, 64, 67, 71], [57, 60, 64, 67], [62, 65, 69, 72], [55, 59, 62, 65]] },
+        { id: "postrock", title: "Dreamy post-rock", chords: [[50, 57, 62, 66], [45, 52, 57, 61], [47, 54, 59, 62], [43, 50, 55, 59]] },
+        { id: "jpop", title: "Sunny J-pop", chords: [[60, 64, 67, 72], [55, 59, 62, 67], [57, 60, 64, 69], [53, 57, 60, 65]] },
+      ];
       let currentRoom = "living";
       let energy = 72;
       let cozy = 68;
@@ -872,8 +981,11 @@
       let musicOn = false;
       let audioContext;
       let musicTimer;
-      let jazzBar = 0;
-      let walkTimer;
+      let musicBar = 0;
+      let musicChannelIndex = -1;
+      let soccerInProgress = false;
+      let koyoshiWanderTimer;
+      const walkTimers = new WeakMap();
 
       function setMood() {
         energyBar.style.width = `${energy}%`;
@@ -938,25 +1050,82 @@
         oscillator.stop(startTime + duration + .03);
       }
 
-      function playJazzBar() {
-        const progression = [
-          [60, 64, 67, 71],
-          [57, 60, 64, 67],
-          [62, 65, 69, 72],
-          [55, 59, 62, 65],
-        ];
-        const chord = progression[jazzBar % progression.length];
+      function playMusicBar() {
+        const channel = musicChannels[Math.max(0, musicChannelIndex)];
+        const chord = channel.chords[musicBar % channel.chords.length];
         const start = audioContext.currentTime + .04;
-        chord.forEach((note) => playJazzNote(note, start, 1.8, .012));
-        playJazzNote(chord[0] - 12, start, 1.2, .025, "triangle");
-        [0, 2, 1, 3].forEach((noteIndex, beat) => {
-          playJazzNote(chord[noteIndex] + 12, start + beat * .48, .34, .018, "triangle");
-        });
-        jazzBar += 1;
+        if (channel.id === "jazz") {
+          chord.forEach((note) => playJazzNote(note, start, 1.8, .012));
+          playJazzNote(chord[0] - 12, start, 1.2, .025, "triangle");
+          [0, 2, 1, 3].forEach((noteIndex, beat) => {
+            playJazzNote(chord[noteIndex] + 12, start + beat * .48, .34, .018, "triangle");
+          });
+        } else if (channel.id === "postrock") {
+          chord.forEach((note) => playJazzNote(note + 12, start, 2.1, .007));
+          playJazzNote(chord[0] - 12, start, 2.1, .018, "triangle");
+          playJazzNote(chord[2] + 12, start + .72, 1.2, .009);
+          playJazzNote(chord[3] + 12, start + 1.38, .72, .008);
+        } else {
+          chord.forEach((note) => playJazzNote(note, start, 1.55, .009));
+          playJazzNote(chord[0] - 12, start, .48, .022, "triangle");
+          [0, 2, 1, 3, 2, 0, 1, 3].forEach((noteIndex, beat) => {
+            playJazzNote(chord[noteIndex] + 12, start + beat * .235, .2, .015, "triangle");
+          });
+        }
+        musicBar += 1;
+      }
+
+      function updateTelevision(television) {
+        const picture = television.querySelector(".tv-picture");
+        const caption = television.querySelector(".tv-caption");
+        const channel = musicChannels[musicChannelIndex];
+        picture.dataset.channel = channel?.id || "jazz";
+        caption.textContent = channel ? `${channel.title} · ${musicOn ? "ON AIR" : "PAUSED"}` : "Tap to shuffle music";
+        television.setAttribute("aria-label", channel ? `TV showing ${channel.title}; click to shuffle` : "TV; click to shuffle music");
+      }
+
+      function setMusicEnabled(enabled) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (enabled && !AudioContextClass) {
+          statusText.textContent = "Audio is not available in this browser";
+          return false;
+        }
+        musicOn = enabled;
+        window.clearInterval(musicTimer);
+        if (musicOn) {
+          if (musicChannelIndex < 0) musicChannelIndex = 0;
+          audioContext ??= new AudioContextClass();
+          audioContext.resume();
+          musicBar = 0;
+          playMusicBar();
+          musicTimer = window.setInterval(playMusicBar, 2200);
+        } else {
+          audioContext?.suspend();
+        }
+        document.querySelectorAll(".furniture.television").forEach(updateTelevision);
+        const button = document.querySelector("#soundButton");
+        button.textContent = musicOn ? "♫" : "♪";
+        button.setAttribute("aria-label", musicOn ? "Pause house music" : "Play house music");
+        button.title = musicOn ? "Pause house music" : "Play house music";
+        return true;
+      }
+
+      function shuffleMusicChannel(television) {
+        const options = musicChannels.map((channel, index) => index).filter((index) => index !== musicChannelIndex);
+        musicChannelIndex = options[Math.floor(Math.random() * options.length)];
+        musicBar = 0;
+        if (!musicOn) {
+          setMusicEnabled(true);
+        } else {
+          window.clearInterval(musicTimer);
+          playMusicBar();
+          musicTimer = window.setInterval(playMusicBar, 2200);
+        }
+        updateTelevision(television);
       }
 
       function moveTo(target, x, y, callback) {
-        clearTimeout(walkTimer);
+        clearTimeout(walkTimers.get(target));
         const stageHeight = stage.clientHeight;
         const floorTop = stageHeight * .60;
         const visualHeight = target.offsetHeight * .8;
@@ -964,10 +1133,10 @@
         target.classList.add("is-walking");
         target.style.left = `${Math.max(7, Math.min(93, x))}%`;
         target.style.top = `${Math.max(minY, Math.min(99, y))}%`;
-        walkTimer = window.setTimeout(() => {
+        walkTimers.set(target, window.setTimeout(() => {
           target.classList.remove("is-walking");
           callback?.();
-        }, 560);
+        }, 560));
       }
 
       function perform(action, object) {
@@ -1013,7 +1182,11 @@
           button.setAttribute("aria-label", `${object.label}: interact`);
           button.style.left = `${object.x}%`;
           button.style.top = `${object.y}%`;
-          button.textContent = object.icon;
+          button.textContent = object.kind === "sofa" ? "" : object.icon;
+          if (object.kind === "television") {
+            button.innerHTML = "<span class=\"tv-screen\"><span class=\"tv-picture\"></span><span class=\"tv-badge\">TV</span><span class=\"tv-caption\"></span></span>";
+            updateTelevision(button);
+          }
           roomObjects.append(button);
         }
         room.penguins.forEach(([x, y], index) => {
@@ -1022,14 +1195,17 @@
           penguin.type = "button";
           penguin.style.left = `${x}%`;
           penguin.style.top = `${y}%`;
+          penguin.dataset.scarf = ["coral", "gold", "blue"][index % 3];
           penguin.setAttribute("aria-label", `Penguin plush ${index + 1}`);
-          penguin.innerHTML = "<span class=\"penguin-eyes\">• •</span><span class=\"penguin-belly\"></span>";
+          penguin.innerHTML = "<span class=\"penguin-eyes\">• •</span><span class=\"penguin-belly\"></span><span class=\"penguin-wing left\"></span><span class=\"penguin-wing right\"></span><span class=\"penguin-scarf\"></span>";
           roomObjects.append(penguin);
         });
         if (room.soccerBall) {
           const ball = document.createElement("button");
           ball.className = "soccer-ball";
           ball.type = "button";
+          ball.style.left = "59%";
+          ball.style.top = "92%";
           ball.setAttribute("aria-label", "Kick the soccer ball");
           roomObjects.append(ball);
         }
@@ -1056,6 +1232,69 @@
         moveTo(iwan, left + (left < 50 ? 13 : -13), top + 18, finish);
       }
 
+      function waitForWalk() {
+        return new Promise((resolve) => window.setTimeout(resolve, 600));
+      }
+
+      async function animateBallTo(ball, destination) {
+        if (!ball.isConnected) return;
+        const start = parseFloat(ball.style.left);
+        const distance = (destination - start) * stage.getBoundingClientRect().width / 100;
+        const animation = ball.animate(
+          [{ transform: "translateX(0) rotate(0)" }, { transform: `translateX(${distance}px) rotate(420deg)` }],
+          { duration: 560, easing: "ease-in-out", fill: "forwards" },
+        );
+        try {
+          await animation.finished;
+        } catch {
+          return;
+        }
+        if (ball.isConnected) ball.style.left = `${destination}%`;
+        animation.cancel();
+      }
+
+      async function playSoccer(ball) {
+        if (soccerInProgress) return;
+        soccerInProgress = true;
+        try {
+          const ballX = parseFloat(ball.style.left);
+          moveTo(iwan, ballX - 4, 97);
+          await waitForWalk();
+          if (!ball.isConnected) return;
+          perform("soccer");
+
+          const passX = Math.min(85, Math.max(ballX + 8, parseFloat(koyoshi.style.left) - 5));
+          moveTo(koyoshi, passX + 3, 97);
+          await Promise.all([waitForWalk(), animateBallTo(ball, passX)]);
+          if (!ball.isConnected) return;
+          say(koyoshi, "Nice pass! My turn!");
+
+          const returnX = Math.max(12, Math.min(87, parseFloat(iwan.style.left) + 2));
+          moveTo(iwan, returnX, 97);
+          await Promise.all([waitForWalk(), animateBallTo(ball, returnX + 3)]);
+          if (!ball.isConnected) return;
+          say(iwan, "Right back to you!");
+          statusText.textContent = "Passing the ball with Koyoshi";
+        } finally {
+          soccerInProgress = false;
+        }
+      }
+
+      function scheduleKoyoshiWander() {
+        window.clearTimeout(koyoshiWanderTimer);
+        koyoshiWanderTimer = window.setTimeout(() => {
+          if (!koyoshi.hidden && !soccerInProgress) {
+            const x = 18 + Math.random() * 67;
+            moveTo(koyoshi, x, 96, () => {
+              koyoshi.classList.add("is-silly");
+              say(koyoshi, sillyLines[Math.floor(Math.random() * sillyLines.length)]);
+              window.setTimeout(() => koyoshi.classList.remove("is-silly"), 850);
+            });
+          }
+          scheduleKoyoshiWander();
+        }, 6500 + Math.random() * 7000);
+      }
+
       document.querySelectorAll(".room-tab").forEach((tab) => tab.addEventListener("click", () => {
         iwan.classList.remove("is-sleeping");
         renderRoom(tab.dataset.room);
@@ -1075,14 +1314,13 @@
       roomObjects.addEventListener("click", (event) => {
         const ball = event.target.closest(".soccer-ball");
         if (ball) {
-          const bounds = stage.getBoundingClientRect();
-          const ballBounds = ball.getBoundingClientRect();
-          const x = ((ballBounds.left + ballBounds.width / 2 - bounds.left) / bounds.width) * 100;
-          const y = ((ballBounds.top + ballBounds.height / 2 - bounds.top) / bounds.height) * 100;
-          moveTo(iwan, x - 5, y + 7, () => {
-            perform("soccer");
-            ball.animate([{ transform: "translateX(0) rotate(0)" }, { transform: "translateX(90px) rotate(500deg)" }], { duration: 650, easing: "ease-out" });
-          });
+          void playSoccer(ball);
+          return;
+        }
+        const television = event.target.closest(".furniture.television");
+        if (television) {
+          shuffleMusicChannel(television);
+          chooseAction("watch", television);
           return;
         }
         const penguin = event.target.closest(".penguin");
@@ -1121,27 +1359,7 @@
 
       document.querySelectorAll(".action-button").forEach((button) => button.addEventListener("click", () => chooseAction(button.dataset.action)));
 
-      document.querySelector("#soundButton").addEventListener("click", async (event) => {
-        const button = event.currentTarget;
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (!musicOn && !AudioContextClass) {
-          statusText.textContent = "Audio is not available in this browser";
-          return;
-        }
-        musicOn = !musicOn;
-        if (musicOn) {
-          audioContext ??= new AudioContextClass();
-          await audioContext.resume();
-          playJazzBar();
-          musicTimer = window.setInterval(playJazzBar, 2200);
-        } else {
-          window.clearInterval(musicTimer);
-          await audioContext.suspend();
-        }
-        button.textContent = musicOn ? "♫" : "♪";
-        button.setAttribute("aria-label", musicOn ? "Turn cozy jazz off" : "Turn cozy jazz on");
-        button.title = musicOn ? "Turn cozy jazz off" : "Turn cozy jazz on";
-      });
+      document.querySelector("#soundButton").addEventListener("click", () => setMusicEnabled(!musicOn));
 
       document.querySelector("#resetButton").addEventListener("click", () => {
         minutes = 14 * 60 + 30;
@@ -1169,6 +1387,7 @@
       renderRoom(currentRoom);
       setMood();
       updateClock();
+      scheduleKoyoshiWander();
     })();
   </script>
 </body>
