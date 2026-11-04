@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f1e8">
+  <title>IWan's House</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+
+    :root {
+      color-scheme: light;
+      --ink: #25342f;
+      --muted: #75817a;
+      --paper: #f6f1e8;
+      --white: #fffdf8;
+      --green: #56785f;
+      --green-dark: #365642;
+      --coral: #e98870;
+      --yellow: #f2c56b;
+      --line: #e7e2d8;
+      font-family: "DM Sans", sans-serif;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 12% 10%, rgba(233, 136, 112, .11), transparent 30rem),
+        radial-gradient(ellipse at 94% 90%, rgba(86, 120, 95, .12), transparent 34rem),
+        var(--paper);
+    }
+
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid #d7835c; outline-offset: 3px; }
+
+    .app {
+      width: min(1380px, 100%);
+      min-height: 100vh;
+      margin: auto;
+      padding: 22px 30px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .topbar {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: white;
+      background: var(--green);
+      font-size: 23px;
+      box-shadow: 0 5px 12px #36564224;
+    }
+    .brand h1 {
+      margin: 0;
+      font: 700 24px/1 "Fraunces", Georgia, serif;
+      letter-spacing: 0;
+    }
+    .brand p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+
+    .top-actions { display: flex; align-items: center; gap: 9px; }
+    .weather, .icon-button {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      color: var(--ink);
+      background: var(--white);
+    }
+    .weather { padding: 0 14px; font-size: 13px; }
+    .icon-button { width: 42px; cursor: pointer; font-size: 18px; }
+    .icon-button:hover { background: #f1eade; }
+
+    .room-nav {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      width: fit-content;
+      max-width: 100%;
+      padding: 5px;
+      overflow-x: auto;
+      border: 1px solid #e7e2d8;
+      border-radius: 15px;
+      background: #fffdf8c9;
+    }
+    .room-tab {
+      min-height: 39px;
+      padding: 0 15px;
+      border: 0;
+      border-radius: 11px;
+      color: #64716a;
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .room-tab:hover { color: var(--green-dark); background: #edf0e9; }
+    .room-tab[aria-pressed="true"] { color: white; background: var(--green); box-shadow: 0 3px 8px #36564225; }
+
+    .content {
+      min-height: 0;
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 275px;
+      gap: 18px;
+    }
+
+    .stage-wrap {
+      position: relative;
+      min-height: 540px;
+      overflow: hidden;
+      border: 1px solid #e4ded2;
+      border-radius: 18px;
+      background: #e8dfd0;
+      box-shadow: 0 12px 35px #48513d13;
+      isolation: isolate;
+    }
+    .stage {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: linear-gradient(180deg, #f2eee4 0 68%, #d7c6a9 68% 100%);
+      --room-accent: #d3bda0;
+      --wall: #f2eee4;
+    }
+    .stage::before {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 69%;
+      content: "";
+      background-image: linear-gradient(#b8a78d0b 1px, transparent 1px), linear-gradient(90deg, #b8a78d0b 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+    .floor {
+      position: absolute;
+      z-index: -1;
+      top: 68%;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: repeating-linear-gradient(0deg, transparent 0 46px, #9e816429 47px 48px), repeating-linear-gradient(90deg, transparent 0 112px, #9e816424 113px 114px), linear-gradient(180deg, #d9c7aa, #ceb99b);
+      transform: perspective(350px) rotateX(5deg);
+      transform-origin: top;
+    }
+    .window {
+      position: absolute;
+      top: 8%;
+      left: 7%;
+      width: 24%;
+      height: 29%;
+      overflow: hidden;
+      border: 9px solid #fff9ec;
+      border-radius: 4px;
+      background: linear-gradient(#add5d7 0 58%, #d8c49a 58%);
+      box-shadow: 0 3px 0 #b69f7e, 0 12px 20px #4e55431a;
+    }
+    .window::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background: linear-gradient(90deg, transparent 47%, #fff8e9 48% 51%, transparent 52%), linear-gradient(180deg, transparent 48%, #fff8e9 49% 52%, transparent 53%);
+    }
+    .skyline {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 42%;
+      background: linear-gradient(90deg, #768b79 0 9%, transparent 9% 13%, #bd8869 13% 25%, transparent 25% 28%, #748873 28% 42%, transparent 42% 47%, #d5a77c 47% 60%, transparent 60% 65%, #788777 65% 82%, transparent 82% 86%, #a47864 86%);
+      clip-path: polygon(0 30%, 6% 30%, 6% 0, 11% 0, 11% 100%, 16% 100%, 16% 34%, 25% 34%, 25% 15%, 31% 15%, 31% 100%, 39% 100%, 39% 21%, 48% 21%, 48% 43%, 56% 43%, 56% 5%, 63% 5%, 63% 100%, 70% 100%, 70% 29%, 79% 29%, 79% 0, 85% 0, 85% 100%, 93% 100%, 93% 38%, 100% 38%, 100% 100%, 0 100%);
+      opacity: .8;
+    }
+    .window-label {
+      position: absolute;
+      top: 5%;
+      left: 8%;
+      padding: 5px 8px;
+      border-radius: 7px;
+      color: #687871;
+      background: #fffdf0dd;
+      font-size: 10px;
+      letter-spacing: .04em;
+    }
+    .wall-art {
+      position: absolute;
+      top: 11%;
+      right: 16%;
+      width: 14%;
+      aspect-ratio: .83;
+      display: grid;
+      place-items: center;
+      border: 8px solid #fff7e8;
+      color: #fff7e8;
+      background: linear-gradient(150deg, #9bb19a, #e5a078 70%);
+      box-shadow: 0 3px 0 #b5a284, 0 8px 14px #4e55431a;
+      font: 600 clamp(13px, 2vw, 24px) "Fraunces", Georgia, serif;
+    }
+    .room-title {
+      position: absolute;
+      top: 7%;
+      left: 38%;
+      margin: 0;
+      color: #6b756d;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .lamp {
+      position: absolute;
+      top: 0;
+      right: 7%;
+      width: 2px;
+      height: 16%;
+      background: #a7977b;
+    }
+    .lamp::after {
+      position: absolute;
+      top: 92%;
+      left: -24px;
+      width: 50px;
+      height: 28px;
+      border-radius: 50% 50% 4px 4px;
+      content: "";
+      background: #f0c77c;
+      box-shadow: 0 16px 38px #f4cb7180;
+    }
+
+    .furniture {
+      position: absolute;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid #594d3d1c;
+      border-radius: 9px;
+      box-shadow: 0 7px 0 #765d3b2b, 0 12px 16px #594d3d20;
+      font-size: clamp(24px, 4vw, 45px);
+      cursor: pointer;
+      transition: filter .2s, transform .2s;
+      user-select: none;
+    }
+    .furniture:hover { filter: brightness(1.05); transform: translateY(-4px); }
+    .furniture::after {
+      position: absolute;
+      top: calc(100% + 7px);
+      left: 50%;
+      content: attr(data-label);
+      color: #5e655c;
+      font-size: 11px;
+      font-weight: 600;
+      text-shadow: 0 1px #fff9;
+      white-space: nowrap;
+      transform: translateX(-50%);
+    }
+    .furniture.bed { left: 16%; top: 52%; width: 30%; height: 26%; background: linear-gradient(180deg, #f7f3e7 0 25%, #abc1b1 26% 100%); }
+    .furniture.desk { right: 14%; top: 50%; width: 27%; height: 9%; background: #9c7658; border-radius: 5px; }
+    .furniture.desk::before { position: absolute; top: 100%; width: 80%; height: 36px; border-left: 6px solid #876648; border-right: 6px solid #876648; content: ""; }
+    .furniture.chair { right: 23%; top: 65%; width: 10%; height: 12%; background: #718b74; }
+    .furniture.stove { left: 19%; top: 51%; width: 26%; height: 17%; background: #e7e0d4; }
+    .furniture.counter { right: 13%; top: 56%; width: 31%; height: 15%; background: #bd926c; }
+    .furniture.sofa { left: 16%; top: 54%; width: 33%; height: 20%; background: #92a990; }
+    .furniture.table { right: 18%; top: 61%; width: 25%; height: 12%; background: #ad805e; border-radius: 50%; }
+    .plant {
+      position: absolute;
+      z-index: 1;
+      right: 7%;
+      bottom: 9%;
+      font-size: 45px;
+      filter: drop-shadow(0 4px 2px #594d3d22);
+    }
+
+    .actor {
+      position: absolute;
+      z-index: 4;
+      width: 68px;
+      height: 138px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: left .55s cubic-bezier(.2,.8,.2,1), top .55s cubic-bezier(.2,.8,.2,1);
+      filter: drop-shadow(0 5px 3px #463b2d26);
+    }
+    .actor .head {
+      position: absolute;
+      top: 4px;
+      left: 14px;
+      width: 42px;
+      height: 48px;
+      border: 2px solid #754d3b;
+      border-radius: 46% 46% 45% 45%;
+      background: #efc7a6;
+    }
+    .actor .hair {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 10px;
+      width: 50px;
+      height: 57px;
+      border-radius: 48% 48% 39% 39%;
+      background: #302925;
+    }
+    .actor .hair::before {
+      position: absolute;
+      top: 26px;
+      left: 0;
+      width: 11px;
+      height: 65px;
+      border-radius: 0 0 8px 8px;
+      content: "";
+      background: #302925;
+    }
+    .actor .hair::after {
+      position: absolute;
+      top: 26px;
+      right: 0;
+      width: 11px;
+      height: 65px;
+      border-radius: 0 0 8px 8px;
+      content: "";
+      background: #302925;
+    }
+    .actor .face {
+      position: absolute;
+      z-index: 2;
+      top: 23px;
+      left: 20px;
+      width: 31px;
+      height: 18px;
+      color: #41352d;
+      font-size: 13px;
+      line-height: 16px;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+    .actor .glasses {
+      position: absolute;
+      z-index: 3;
+      top: 21px;
+      left: 17px;
+      width: 38px;
+      height: 14px;
+      border: 2px solid #28352f;
+      border-radius: 7px;
+    }
+    .actor .glasses::after {
+      position: absolute;
+      top: 4px;
+      left: 15px;
+      width: 7px;
+      border-top: 2px solid #28352f;
+      content: "";
+    }
+    .actor .body {
+      position: absolute;
+      top: 52px;
+      left: 13px;
+      width: 44px;
+      height: 56px;
+      border: 1px solid #675b4b55;
+      border-radius: 15px 15px 8px 8px;
+      background: #d88170;
+    }
+    .actor .legs {
+      position: absolute;
+      top: 105px;
+      left: 21px;
+      width: 29px;
+      height: 26px;
+      border-left: 9px solid #526c63;
+      border-right: 9px solid #526c63;
+      border-radius: 0 0 5px 5px;
+    }
+    .actor .shoes {
+      position: absolute;
+      top: 127px;
+      left: 16px;
+      width: 41px;
+      height: 8px;
+      border-radius: 50%;
+      background: #725543;
+    }
+    .actor.iwan .hair { height: 82px; }
+    .actor.iwan .body { background: #d98673; }
+    .actor.koyoshi { width: 80px; height: 146px; }
+    .actor.koyoshi .head { top: 0; left: 9px; width: 62px; height: 62px; border-radius: 48%; }
+    .actor.koyoshi .hair { top: -4px; left: 5px; width: 70px; height: 38px; border-radius: 50% 50% 25% 25%; }
+    .actor.koyoshi .hair::before, .actor.koyoshi .hair::after { display: none; }
+    .actor.koyoshi .face { top: 25px; left: 19px; width: 43px; font-size: 19px; letter-spacing: 3px; }
+    .actor.koyoshi .glasses { display: none; }
+    .actor.koyoshi .body { top: 60px; left: 17px; width: 46px; height: 50px; border-radius: 13px; background: #7191a0; }
+    .actor.koyoshi .legs { top: 108px; left: 24px; }
+    .actor.koyoshi .shoes { top: 130px; left: 18px; }
+    .actor.is-walking .body { animation: bob .22s ease-in-out infinite alternate; }
+    .actor.is-sleeping { transform: translate(-50%, -50%) rotate(90deg) scale(.8); }
+    .actor.is-sleeping .body { background: #8197ae; }
+    @keyframes bob { to { translate: 0 -4px; } }
+    @keyframes pop { 0% { opacity: 0; transform: translate(-50%, 6px) scale(.9); } 100% { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+
+    .penguin {
+      position: absolute;
+      z-index: 3;
+      width: 44px;
+      height: 53px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 48% 48% 43% 43%;
+      color: #293d42;
+      background: radial-gradient(ellipse at 50% 68%, #fff8ea 0 33%, transparent 34%), #354b50;
+      box-shadow: 0 5px 0 #24373a2b, 0 8px 10px #594d3d17;
+      font-size: 9px;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    .penguin::before {
+      position: absolute;
+      top: 23px;
+      left: 19px;
+      width: 0;
+      height: 0;
+      border-top: 5px solid #eaa55a;
+      border-right: 4px solid transparent;
+      border-left: 4px solid transparent;
+      content: "";
+    }
+    .penguin::after {
+      position: absolute;
+      bottom: -3px;
+      left: 8px;
+      width: 28px;
+      height: 5px;
+      border-radius: 50%;
+      background: #d89150;
+      box-shadow: 0 0 0 2px #fff5;
+      content: "";
+    }
+    .penguin:hover { transform: translateY(-5px) rotate(-5deg); }
+    .penguin span { position: absolute; top: 17px; z-index: 1; color: white; letter-spacing: 9px; transform: translateX(4px); }
+
+    .speech {
+      position: absolute;
+      z-index: 8;
+      left: 50%;
+      bottom: calc(100% + 7px);
+      width: max-content;
+      max-width: 210px;
+      padding: 9px 12px;
+      border: 1px solid #e9e1d3;
+      border-radius: 13px 13px 13px 4px;
+      color: #3e4e44;
+      background: #fffdf8;
+      box-shadow: 0 6px 16px #3b44351a;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: center;
+      animation: pop .2s ease-out both;
+      transform: translateX(-50%);
+    }
+    .actor .speech { bottom: calc(100% - 5px); }
+
+    .side-panel {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fffdf8;
+      box-shadow: 0 10px 28px #48513d0d;
+    }
+    .profile { padding: 20px 19px 16px; border-bottom: 1px solid var(--line); }
+    .profile-row { display: flex; align-items: center; gap: 12px; }
+    .portrait {
+      width: 49px;
+      height: 49px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: #f4dfd2;
+      font-size: 27px;
+    }
+    .profile h2 { margin: 0; font: 700 19px/1.1 "Fraunces", Georgia, serif; }
+    .profile .role { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+    .status-line { display: flex; align-items: center; gap: 7px; margin: 16px 0 0; color: #59685e; font-size: 12px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #7da47b; box-shadow: 0 0 0 3px #7da47b20; }
+
+    .meters { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; padding: 16px 19px; border-bottom: 1px solid var(--line); }
+    .meter-heading { display: flex; justify-content: space-between; gap: 4px; margin-bottom: 7px; color: #637068; font-size: 10px; }
+    .meter-heading strong { color: var(--ink); font-size: 10px; }
+    .meter-track { height: 6px; overflow: hidden; border-radius: 8px; background: #eeeae0; }
+    .meter-fill { width: 72%; height: 100%; border-radius: inherit; background: #e5ae58; transition: width .4s; }
+    .meter-fill.cozy { width: 68%; background: #7f9b79; }
+
+    .section-heading { display: flex; align-items: baseline; justify-content: space-between; margin: 0 0 11px; font-size: 12px; font-weight: 700; }
+    .section-heading span:last-child { color: #9a9d92; font-size: 10px; font-weight: 500; }
+    .quick-actions { padding: 16px 19px; border-bottom: 1px solid var(--line); }
+    .action-list { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .action-button {
+      min-height: 37px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 9px;
+      border: 1px solid #eae5da;
+      border-radius: 10px;
+      color: #4c5a51;
+      background: #fffefa;
+      cursor: pointer;
+      font-size: 11px;
+      text-align: left;
+      transition: border-color .2s, background .2s;
+    }
+    .action-button:hover { border-color: #bac8b5; background: #f2f5ee; }
+    .action-button span { font-size: 16px; }
+
+    .diary { min-height: 0; flex: 1; padding: 16px 19px; }
+    .diary-list { display: flex; flex-direction: column; gap: 11px; margin: 0; padding: 0; list-style: none; }
+    .diary-list li { display: grid; grid-template-columns: 36px 1fr; gap: 9px; align-items: start; color: #6b756d; font-size: 11px; line-height: 1.45; }
+    .diary-time { color: #a0a297; font-size: 10px; font-variant-numeric: tabular-nums; }
+
+    .bottom-note { display: flex; align-items: center; justify-content: space-between; gap: 14px; color: #7e867d; font-size: 11px; }
+    .bottom-note strong { color: #53665a; font-weight: 600; }
+    .key-hint { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+    kbd { min-width: 21px; padding: 3px 5px; border: 1px solid #ded9ce; border-radius: 5px; background: #fffdf8; color: #667067; font: 10px "DM Sans", sans-serif; text-align: center; }
+
+    @media (min-height: 900px) { .stage-wrap { min-height: 620px; } }
+    @media (max-width: 850px) {
+      .app { padding: 17px 18px 22px; }
+      .content { grid-template-columns: minmax(0, 1fr) 235px; gap: 12px; }
+      .stage-wrap { min-height: 500px; }
+      .profile, .quick-actions, .diary { padding-right: 14px; padding-left: 14px; }
+      .meters { padding-right: 14px; padding-left: 14px; }
+      .room-tab { padding: 0 11px; }
+    }
+    @media (max-width: 650px) {
+      .app { min-height: 100svh; padding: 13px 12px 16px; gap: 12px; }
+      .topbar { min-height: 48px; }
+      .brand-mark { width: 39px; height: 39px; border-radius: 13px; }
+      .brand h1 { font-size: 21px; }
+      .brand p { font-size: 10px; }
+      .weather { height: 37px; padding: 0 9px; font-size: 11px; }
+      .icon-button { width: 37px; height: 37px; }
+      .room-nav { width: 100%; }
+      .room-tab { flex: 1; min-height: 37px; padding: 0 8px; font-size: 12px; }
+      .content { display: flex; flex-direction: column; gap: 10px; }
+      .stage-wrap { min-height: min(56vh, 480px); min-height: clamp(340px, 54svh, 480px); }
+      .window { left: 5%; width: 27%; }
+      .wall-art { right: 10%; }
+      .room-title { left: 37%; font-size: 9px; }
+      .furniture.bed { left: 11%; width: 34%; }
+      .furniture.desk { right: 9%; width: 30%; }
+      .furniture.stove { left: 11%; width: 29%; }
+      .furniture.counter { right: 8%; width: 35%; }
+      .furniture.sofa { left: 11%; width: 36%; }
+      .furniture.table { right: 10%; width: 28%; }
+      .side-panel { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; }
+      .profile { padding: 12px; border-right: 1px solid var(--line); }
+      .portrait { width: 39px; height: 39px; border-radius: 13px; font-size: 22px; }
+      .profile h2 { font-size: 17px; }
+      .profile .role { font-size: 9px; }
+      .status-line { margin-top: 10px; font-size: 10px; }
+      .meters { align-content: center; padding: 11px; border-bottom: 1px solid var(--line); }
+      .quick-actions { grid-column: 1 / -1; padding: 12px; border-bottom: 0; }
+      .quick-actions .section-heading { margin-bottom: 8px; }
+      .action-list { grid-template-columns: repeat(4, 1fr); gap: 5px; }
+      .action-button { min-height: 36px; justify-content: center; padding: 0 4px; font-size: 10px; }
+      .action-button span { font-size: 15px; }
+      .diary { display: none; }
+      .bottom-note { font-size: 10px; }
+      .key-hint { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">⌂</div>
+        <div>
+          <h1>IWan's House</h1>
+          <p>A little life in Montreal</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="weather"><span aria-hidden="true">☀</span><span id="weatherText">Montreal · 18°</span></div>
+        <button class="icon-button" id="soundButton" type="button" aria-label="Toggle sound" title="Toggle sound">♫</button>
+        <button class="icon-button" id="resetButton" type="button" aria-label="Reset the day" title="Reset the day">↺</button>
+      </div>
+    </header>
+
+    <nav class="room-nav" aria-label="Rooms">
+      <button class="room-tab" type="button" data-room="living" aria-pressed="true">Living room</button>
+      <button class="room-tab" type="button" data-room="bedroom" aria-pressed="false">Bedroom</button>
+      <button class="room-tab" type="button" data-room="study" aria-pressed="false">Study</button>
+      <button class="room-tab" type="button" data-room="kitchen" aria-pressed="false">Kitchen</button>
+    </nav>
+
+    <section class="content" aria-label="IWan's condo">
+      <div class="stage-wrap">
+        <div class="stage" id="stage" aria-label="Living room scene">
+          <div class="floor" aria-hidden="true"></div>
+          <div class="window" aria-hidden="true"><div class="skyline"></div></div>
+          <div class="window-label">MONTREAL, QC</div>
+          <h2 class="room-title" id="roomTitle">A quiet afternoon at home</h2>
+          <div class="wall-art" aria-hidden="true">bonjour</div>
+          <div class="lamp" aria-hidden="true"></div>
+          <div id="roomObjects"></div>
+          <button class="actor iwan" id="iwan" type="button" aria-label="IWan, click to interact" style="left:53%;top:76%">
+            <span class="hair"></span><span class="head"></span><span class="face">•‿•</span><span class="glasses"></span><span class="body"></span><span class="legs"></span><span class="shoes"></span>
+          </button>
+          <button class="actor koyoshi" id="koyoshi" type="button" aria-label="Koyoshi, click to talk" style="left:78%;top:76%">
+            <span class="hair"></span><span class="head"></span><span class="face">•ᴗ•</span><span class="glasses"></span><span class="body"></span><span class="legs"></span><span class="shoes"></span>
+          </button>
+          <div class="plant" aria-hidden="true">🪴</div>
+        </div>
+      </div>
+
+      <aside class="side-panel" aria-label="Character and activities">
+        <section class="profile">
+          <div class="profile-row">
+            <div class="portrait" aria-hidden="true">👓</div>
+            <div><h2>IWan</h2><p class="role">PhD · Marketing professor</p></div>
+          </div>
+          <p class="status-line"><span class="status-dot"></span><span id="statusText">Enjoying a slow day</span></p>
+        </section>
+        <section class="meters" aria-label="IWan's mood">
+          <div><div class="meter-heading"><span>Energy</span><strong id="energyValue">72%</strong></div><div class="meter-track"><div class="meter-fill" id="energyBar"></div></div></div>
+          <div><div class="meter-heading"><span>Cozy</span><strong id="cozyValue">68%</strong></div><div class="meter-track"><div class="meter-fill cozy" id="cozyBar"></div></div></div>
+        </section>
+        <section class="quick-actions">
+          <h3 class="section-heading"><span>Little plans</span><span>pick one</span></h3>
+          <div class="action-list">
+            <button class="action-button" data-action="sleep" type="button"><span aria-hidden="true">☾</span>Nap</button>
+            <button class="action-button" data-action="work" type="button"><span aria-hidden="true">✎</span>Work</button>
+            <button class="action-button" data-action="cook" type="button"><span aria-hidden="true">♨</span>Cook</button>
+            <button class="action-button" data-action="penguin" type="button"><span aria-hidden="true">●</span>Penguins</button>
+          </div>
+        </section>
+        <section class="diary">
+          <h3 class="section-heading"><span>At home</span><span id="clock">2:30 PM</span></h3>
+          <ul class="diary-list" id="diaryList" aria-live="polite">
+            <li><span class="diary-time">2:30</span><span>A peaceful afternoon in Montreal.</span></li>
+            <li><span class="diary-time">2:24</span><span>The penguins are having a meeting.</span></li>
+            <li><span class="diary-time">2:10</span><span>Koyoshi made a very serious cup of tea.</span></li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="bottom-note">
+      <span><strong>Make yourself at home.</strong> Click anywhere to wander, or tap something interesting.</span>
+      <span class="key-hint"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to walk</span>
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      const stage = document.querySelector("#stage");
+      const roomObjects = document.querySelector("#roomObjects");
+      const iwan = document.querySelector("#iwan");
+      const koyoshi = document.querySelector("#koyoshi");
+      const statusText = document.querySelector("#statusText");
+      const clock = document.querySelector("#clock");
+      const diaryList = document.querySelector("#diaryList");
+      const energyBar = document.querySelector("#energyBar");
+      const cozyBar = document.querySelector("#cozyBar");
+      const energyValue = document.querySelector("#energyValue");
+      const cozyValue = document.querySelector("#cozyValue");
+
+      const rooms = {
+        living: {
+          title: "A quiet afternoon at home",
+          objects: [
+            { kind: "sofa", label: "Sofa", icon: "☁", action: "relax", x: 31, y: 63 },
+            { kind: "table", label: "Tea table", icon: "☕", action: "tea", x: 69, y: 66 },
+          ],
+          penguins: [[54, 75], [88, 75]],
+        },
+        bedroom: {
+          title: "The softest place to land",
+          objects: [
+            { kind: "bed", label: "Big cozy bed", icon: "☾", action: "sleep", x: 31, y: 64 },
+            { kind: "desk", label: "Bedside table", icon: "▤", action: "relax", x: 75, y: 57 },
+          ],
+          penguins: [[68, 76]],
+        },
+        study: {
+          title: "Ideas, notes & one good lamp",
+          objects: [
+            { kind: "desk", label: "Professor desk", icon: "▤", action: "work", x: 70, y: 56 },
+            { kind: "chair", label: "Desk chair", icon: "♧", action: "work", x: 68, y: 72 },
+          ],
+          penguins: [[25, 77], [87, 76]],
+        },
+        kitchen: {
+          title: "Something lovely is simmering",
+          objects: [
+            { kind: "stove", label: "Stove", icon: "♨", action: "cook", x: 31, y: 60 },
+            { kind: "counter", label: "Kitchen counter", icon: "🥣", action: "cook", x: 71, y: 63 },
+          ],
+          penguins: [[52, 77]],
+        },
+      };
+
+      const lines = {
+        sleep: ["A little nap sounds perfect.", "Rest well, IWan. The city can wait.", "Zzz... the penguins are on lookout."],
+        work: ["One thoughtful idea at a time.", "A new lecture is taking shape.", "IWan has entered professor mode."],
+        cook: ["A cozy little meal is on the way.", "Something delicious is simmering.", "Koyoshi has volunteered to taste-test."],
+        relax: ["A soft sofa and nowhere to be.", "This is a very good place to sit.", "A little quiet does wonders."],
+        tea: ["Tea for two? Koyoshi says yes.", "The tea is warm and the afternoon is slow.", "Koyoshi made it. It is... surprisingly good."],
+        penguin: ["The penguins have important penguin business.", "One penguin waddles over for a hello.", "Tiny flippers, enormous opinions."],
+      };
+      const penguinLines = ["Honk!", "Waddle waddle.", "I am the captain now.", "Have you seen my fish?", "Penguin meeting. Very important."];
+      const koyoshiLines = ["I made tea! I only spilled a tiny bit.", "IWan, do you think penguins know it's cold?", "I was helping. This is what helping looks like.", "You look very professor-y today.", "I saved you the last dumpling. Probably."];
+      let currentRoom = "living";
+      let energy = 72;
+      let cozy = 68;
+      let minutes = 14 * 60 + 30;
+      let soundOn = false;
+      let audioContext;
+      let walkTimer;
+
+      function setMood() {
+        energyBar.style.width = `${energy}%`;
+        cozyBar.style.width = `${cozy}%`;
+        energyValue.textContent = `${energy}%`;
+        cozyValue.textContent = `${cozy}%`;
+      }
+
+      function updateClock() {
+        const hour24 = Math.floor(minutes / 60) % 24;
+        const hour = hour24 % 12 || 12;
+        const minute = String(minutes % 60).padStart(2, "0");
+        const period = hour24 >= 12 ? "PM" : "AM";
+        clock.textContent = `${hour}:${minute} ${period}`;
+      }
+
+      function addDiary(message) {
+        const timeLabel = `${Math.floor(minutes / 60) % 12 || 12}:${String(minutes % 60).padStart(2, "0")}`;
+        const item = document.createElement("li");
+        const time = document.createElement("span");
+        const text = document.createElement("span");
+        time.className = "diary-time";
+        time.textContent = timeLabel;
+        text.textContent = message;
+        item.append(time, text);
+        diaryList.prepend(item);
+        while (diaryList.children.length > 4) diaryList.lastElementChild.remove();
+      }
+
+      function say(target, message) {
+        target.querySelector(".speech")?.remove();
+        const bubble = document.createElement("span");
+        bubble.className = "speech";
+        bubble.textContent = message;
+        target.append(bubble);
+        window.setTimeout(() => bubble.remove(), 3000);
+      }
+
+      function chime() {
+        if (!soundOn) return;
+        audioContext ??= new AudioContext();
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = 620;
+        gain.gain.setValueAtTime(.035, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(.001, audioContext.currentTime + .12);
+        oscillator.connect(gain).connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + .12);
+      }
+
+      function moveTo(target, x, y, callback) {
+        clearTimeout(walkTimer);
+        target.classList.add("is-walking");
+        target.style.left = `${Math.max(7, Math.min(93, x))}%`;
+        target.style.top = `${Math.max(44, Math.min(86, y))}%`;
+        walkTimer = window.setTimeout(() => {
+          target.classList.remove("is-walking");
+          callback?.();
+        }, 560);
+      }
+
+      function perform(action, object) {
+        const responses = lines[action] || lines.relax;
+        const message = responses[Math.floor(Math.random() * responses.length)];
+        statusText.textContent = {
+          sleep: "Taking a well-earned nap",
+          work: "Working on something brilliant",
+          cook: "Making a cozy little meal",
+          relax: "Taking it nice and slow",
+          tea: "Having tea with Koyoshi",
+          penguin: "Checking in with the penguins",
+        }[action] || "Enjoying a slow day";
+        minutes += action === "sleep" ? 90 : action === "work" ? 55 : 20;
+        energy = Math.max(12, Math.min(100, energy + (action === "sleep" ? 35 : action === "work" ? -17 : -5)));
+        cozy = Math.max(10, Math.min(100, cozy + (action === "work" ? -5 : 10)));
+        setMood();
+        updateClock();
+        iwan.classList.toggle("is-sleeping", action === "sleep");
+        say(iwan, message);
+        addDiary(message);
+        if (object) {
+          object.animate([{ transform: "translateY(0)" }, { transform: "translateY(-8px)" }, { transform: "translateY(0)" }], { duration: 420, easing: "ease-out" });
+        }
+        chime();
+      }
+
+      function renderRoom(roomName) {
+        currentRoom = roomName;
+        const room = rooms[roomName];
+        document.querySelector("#roomTitle").textContent = room.title;
+        stage.setAttribute("aria-label", `${roomName} scene`);
+        document.querySelectorAll(".room-tab").forEach((tab) => tab.setAttribute("aria-pressed", String(tab.dataset.room === roomName)));
+        roomObjects.replaceChildren();
+        for (const object of room.objects) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `furniture ${object.kind}`;
+          button.dataset.action = object.action;
+          button.dataset.label = object.label;
+          button.setAttribute("aria-label", `${object.label}: interact`);
+          button.style.left = `${object.x}%`;
+          button.style.top = `${object.y}%`;
+          button.textContent = object.icon;
+          roomObjects.append(button);
+        }
+        room.penguins.forEach(([x, y], index) => {
+          const penguin = document.createElement("button");
+          penguin.className = "penguin";
+          penguin.type = "button";
+          penguin.style.left = `${x}%`;
+          penguin.style.top = `${y}%`;
+          penguin.setAttribute("aria-label", `Penguin plush ${index + 1}`);
+          penguin.innerHTML = "<span>••</span>";
+          roomObjects.append(penguin);
+        });
+        koyoshi.hidden = roomName === "bedroom";
+        const startingPositions = {
+          living: [53, 78, 78, 77],
+          bedroom: [62, 77, 80, 77],
+          study: [48, 77, 81, 77],
+          kitchen: [51, 77, 79, 77],
+        }[roomName];
+        iwan.style.left = `${startingPositions[0]}%`;
+        iwan.style.top = `${startingPositions[1]}%`;
+        koyoshi.style.left = `${startingPositions[2]}%`;
+        koyoshi.style.top = `${startingPositions[3]}%`;
+      }
+
+      function chooseAction(action, object) {
+        const roomObjectsList = [...roomObjects.querySelectorAll(".furniture")];
+        const matchingObject = object || roomObjectsList.find((item) => item.dataset.action === action);
+        const finish = () => perform(action, matchingObject);
+        if (!matchingObject) return finish();
+        const left = parseFloat(matchingObject.style.left);
+        const top = parseFloat(matchingObject.style.top);
+        moveTo(iwan, left + (left < 50 ? 13 : -13), top + 18, finish);
+      }
+
+      document.querySelectorAll(".room-tab").forEach((tab) => tab.addEventListener("click", () => {
+        iwan.classList.remove("is-sleeping");
+        renderRoom(tab.dataset.room);
+        statusText.textContent = `Wandering into the ${tab.textContent.toLowerCase()}`;
+        chime();
+      }));
+
+      stage.addEventListener("click", (event) => {
+        if (event.target.closest(".furniture, .penguin, .actor")) return;
+        const bounds = stage.getBoundingClientRect();
+        const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+        const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+        moveTo(iwan, x, y);
+        statusText.textContent = "Having a little wander";
+      });
+
+      roomObjects.addEventListener("click", (event) => {
+        const penguin = event.target.closest(".penguin");
+        if (penguin) {
+          const message = penguinLines[Math.floor(Math.random() * penguinLines.length)];
+          say(penguin, message);
+          statusText.textContent = "A very important penguin meeting";
+          cozy = Math.min(100, cozy + 3);
+          cozyBar.style.width = `${cozy}%`;
+          cozyValue.textContent = `${cozy}%`;
+          addDiary(`A penguin says, “${message}”`);
+          chime();
+          return;
+        }
+        const furniture = event.target.closest(".furniture");
+        if (furniture) chooseAction(furniture.dataset.action, furniture);
+      });
+
+      iwan.addEventListener("click", (event) => {
+        event.stopPropagation();
+        say(iwan, "Hi. It is nice and quiet at home.");
+        statusText.textContent = "IWan is happy you're here";
+      });
+
+      koyoshi.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const message = koyoshiLines[Math.floor(Math.random() * koyoshiLines.length)];
+        say(koyoshi, message);
+        statusText.textContent = "Koyoshi has something to say";
+        addDiary(message);
+        cozy = Math.min(100, cozy + 4);
+        cozyBar.style.width = `${cozy}%`;
+        cozyValue.textContent = `${cozy}%`;
+        chime();
+      });
+
+      document.querySelectorAll(".action-button").forEach((button) => button.addEventListener("click", () => chooseAction(button.dataset.action)));
+
+      document.querySelector("#soundButton").addEventListener("click", (event) => {
+        soundOn = !soundOn;
+        event.currentTarget.textContent = soundOn ? "♫" : "♪";
+        event.currentTarget.setAttribute("aria-label", soundOn ? "Turn sound off" : "Turn sound on");
+        event.currentTarget.title = soundOn ? "Turn sound off" : "Turn sound on";
+        chime();
+      });
+
+      document.querySelector("#resetButton").addEventListener("click", () => {
+        minutes = 14 * 60 + 30;
+        energy = 72;
+        cozy = 68;
+        statusText.textContent = "Enjoying a slow day";
+        iwan.classList.remove("is-sleeping");
+        diaryList.replaceChildren();
+        addDiary("A peaceful afternoon in Montreal.");
+        setMood();
+        updateClock();
+        renderRoom("living");
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.target.matches("button, input, textarea")) return;
+        const key = event.key.toLowerCase();
+        const offsets = { w: [0, -6], arrowup: [0, -6], s: [0, 6], arrowdown: [0, 6], a: [-6, 0], arrowleft: [-6, 0], d: [6, 0], arrowright: [6, 0] };
+        if (!offsets[key]) return;
+        event.preventDefault();
+        const [dx, dy] = offsets[key];
+        moveTo(iwan, parseFloat(iwan.style.left) + dx, parseFloat(iwan.style.top) + dy);
+      });
+
+      renderRoom(currentRoom);
+      setMood();
+      updateClock();
+    })();
+  </script>
+</body>
+</html>
