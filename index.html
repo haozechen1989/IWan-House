@@ -587,42 +587,40 @@
     }
     .actor.koyoshi { width: 80px; height: 146px; }
     .actor.koyoshi .head { top: 2px; left: 12px; width: 56px; height: 56px; border-radius: 48%; }
-    .actor.koyoshi .hair { z-index: 2; top: -1px; left: 5px; width: 70px; height: 58px; border: 2px solid #142532; border-radius: 50% 50% 38% 38%; background: linear-gradient(140deg, #243644, #111e29 74%); }
-    .actor.koyoshi .hair::before { top: 17px; left: -3px; width: 72px; height: 7px; border-radius: 4px; background: linear-gradient(90deg, #172733, #354a55 48%, #172733); box-shadow: 0 2px 3px #101a20aa; }
-    .actor.koyoshi .hair::after { top: 18px; right: -7px; left: auto; width: 12px; height: 20px; border-radius: 0 0 8px 3px; background: #253947; transform: rotate(-18deg); }
-    .actor.koyoshi .face { top: 25px; left: 23px; }
-    .actor.koyoshi .face b { top: 11px; }
+    .actor.koyoshi .hair { z-index: 2; top: 0; left: 7px; width: 66px; height: 29px; border-radius: 52% 50% 22% 20%; background: linear-gradient(140deg, #211d1c, #080a0c 72%); }
+    .actor.koyoshi .hair::before { top: 12px; left: 3px; width: 61px; height: 12px; border-radius: 3px 4px 45% 38%; background: #111214; clip-path: polygon(0 0, 100% 0, 94% 55%, 77% 49%, 63% 100%, 48% 52%, 33% 84%, 17% 46%, 0 66%); }
+    .actor.koyoshi .hair::after { top: 15px; right: 3px; left: auto; width: 7px; height: 9px; border-radius: 0 0 5px 3px; background: #111214; }
+    .actor.koyoshi .face { z-index: 4; top: 25px; left: 23px; }
+    .actor.koyoshi .face i { z-index: 1; width: 6px; height: 7px; background: #fffaf0; box-shadow: 0 0 2px #fffaf0; }
+    .actor.koyoshi .face i::after { position: absolute; top: 2px; left: 2px; width: 2px; height: 3px; border-radius: 50%; background: #352c29; content: ""; }
+    .actor.koyoshi .face::before { top: 10px; left: 0; width: 6px; height: 4px; border-radius: 50%; background: #e99491a8; box-shadow: 27px 0 #e99491a8; content: ""; }
+    .actor.koyoshi .face b { top: 11px; left: 10px; width: 14px; height: 7px; display: block; border-bottom: 2px solid #a85852; border-radius: 0 0 50% 50%; }
     .actor.koyoshi .glasses { display: none; }
-    .actor.koyoshi .body { top: 58px; left: 17px; width: 46px; height: 52px; border: 1px solid #142638; border-radius: 13px; background: linear-gradient(145deg, transparent 0 42%, #d2bd7a 43% 52%, transparent 53%), linear-gradient(180deg, #263b50, #172735); }
+    .actor.koyoshi .body { z-index: 1; top: 58px; left: 17px; width: 46px; height: 52px; border: 1px solid #142638; border-radius: 13px; background: linear-gradient(145deg, transparent 0 42%, #d2bd7a 43% 52%, transparent 53%), linear-gradient(180deg, #263b50, #172735); }
     .actor.koyoshi .body::before { position: absolute; top: 4px; left: 2px; width: 40px; height: 6px; border-radius: 3px; background: #d3b86e; box-shadow: 0 2px 3px #16243266; content: ""; }
     .actor.koyoshi .body::after { position: absolute; top: 5px; left: 18px; width: 8px; height: 5px; border: 1px solid #886d35; border-radius: 2px; background: #e7cf86; content: ""; }
-    .actor.koyoshi .face b { display: none; }
-    .actor.koyoshi .face::after { position: absolute; top: 10px; left: 1px; width: 32px; height: 10px; border-radius: 2px 2px 10px 10px; background: #213546; clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%); content: ""; }
     .actor.koyoshi .legs { top: 108px; left: 24px; }
     .actor.koyoshi .shoes { top: 130px; left: 18px; }
     .actor.koyoshi .toy-katana {
       position: absolute;
-      z-index: 3;
-      top: 55px;
-      left: 60px;
+      z-index: 0;
+      top: 45px;
+      left: 16px;
       display: block;
-      width: 10px;
-      height: 78px;
+      width: 8px;
+      height: 82px;
       border: 1px solid #708c91;
-      border-radius: 6px 6px 2px 2px;
-      background: linear-gradient(90deg, #9ec7cb, #fff 48%, #9ec7cb);
+      border-radius: 5px;
+      background: linear-gradient(90deg, #647e83, #c0d8d8 46%, #758d91);
       box-shadow: 1px 3px 4px #34444a55;
-      transform: rotate(38deg);
-      transform-origin: center bottom;
+      transform: rotate(-38deg);
+      transform-origin: center top;
     }
-    .actor.koyoshi.is-wielding .toy-katana { animation: toy-swing .55s ease-in-out infinite alternate; }
-    .actor.koyoshi.is-game-room .toy-katana { display: none; animation: none; }
-    .actor.koyoshi:not(.is-game-room) .toy-katana { display: block; visibility: visible; }
     .actor.koyoshi .toy-katana::before {
       position: absolute;
-      bottom: 11px;
-      left: -8px;
-      width: 22px;
+      top: 10px;
+      left: -6px;
+      width: 18px;
       height: 5px;
       border-radius: 3px;
       background: #d5ad63;
@@ -630,16 +628,15 @@
     }
     .actor.koyoshi .toy-katana::after {
       position: absolute;
-      bottom: -9px;
-      left: -3px;
-      width: 11px;
-      height: 15px;
+      top: -15px;
+      left: -2px;
+      width: 8px;
+      height: 16px;
       border-radius: 2px;
       background: repeating-linear-gradient(135deg, #715245 0 2px, #d6bd99 2px 4px);
       content: "";
     }
     .actor.koyoshi.is-silly { animation: silly-bounce .8s ease-in-out; }
-    @keyframes toy-swing { to { transform: rotate(-24deg); } }
     @keyframes silly-bounce {
       0%, 100% { transform: translate(-50%, -100%) scale(.8) rotate(0); }
       30% { transform: translate(-50%, -100%) scale(.8) rotate(-8deg) translateY(-4px); }
@@ -1362,8 +1359,7 @@
         }
         soccerHud.hidden = !room.shootingGame;
         aimReticle.hidden = !room.shootingGame;
-        koyoshi.classList.toggle("is-game-room", room.shootingGame);
-        koyoshi.classList.remove("is-wielding", "is-silly");
+        koyoshi.classList.remove("is-silly");
         if (room.shootingGame) {
           soccerGoals = 0;
           soccerShots = 0;
@@ -1519,23 +1515,10 @@
             const x = 18 + Math.random() * 67;
             moveTo(koyoshi, x, 96, () => {
               if (currentRoom === "game") return;
-              if (Math.random() < .28) {
-                koyoshi.classList.add("is-wielding");
-                say(koyoshi, "En garde! The rug is my sworn rival!");
-                if (Math.random() < .32) {
-                  window.setTimeout(() => {
-                    if (currentRoom === "game") return;
-                    koyoshi.classList.add("is-silly");
-                    say(koyoshi, "Ow! My own toy katana bonked me. Victory is awkward.");
-                    statusText.textContent = "Koyoshi is dramatically fine after a toy-sword mishap";
-                  }, 650);
-                }
-                window.setTimeout(() => koyoshi.classList.remove("is-wielding", "is-silly"), 2400);
-              } else {
-                koyoshi.classList.add("is-silly");
-                say(koyoshi, sillyLines[Math.floor(Math.random() * sillyLines.length)]);
-                window.setTimeout(() => koyoshi.classList.remove("is-silly"), 850);
-              }
+              koyoshi.classList.add("is-silly");
+              const message = Math.random() < .25 ? "My katana is safely sheathed. My tea, less so." : sillyLines[Math.floor(Math.random() * sillyLines.length)];
+              say(koyoshi, message);
+              window.setTimeout(() => koyoshi.classList.remove("is-silly"), 850);
             });
           }
           scheduleKoyoshiWander();
