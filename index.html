@@ -90,6 +90,7 @@
     .weather { padding: 0 14px; font-size: 13px; }
     .icon-button { width: 42px; cursor: pointer; font-size: 18px; }
     .icon-button:hover { background: #f1eade; }
+    .phone-mode-button { display: none; }
 
     .room-nav {
       display: flex;
@@ -143,6 +144,15 @@
       --room-accent: #d3bda0;
       --wall: #f2eee4;
     }
+    .stage.is-game-room { background: linear-gradient(180deg, #dce8df 0 60%, #78976f 60% 100%); }
+    .stage.is-game-room .floor {
+      background: repeating-linear-gradient(90deg, #78976f 0 12%, #84a179 12% 24%);
+      transform: none;
+    }
+    .stage.is-game-room .floor::before { position: absolute; inset: 5% 8%; border: 2px solid #f3f2d89c; content: ""; }
+    .stage.is-game-room .floor::after { position: absolute; top: 50%; left: 50%; width: 18%; aspect-ratio: 1; border: 2px solid #f3f2d89c; border-radius: 50%; content: ""; transform: translate(-50%, -50%); }
+    .stage.is-game-room .window, .stage.is-game-room .window-label, .stage.is-game-room .wall-art, .stage.is-game-room .lamp, .stage.is-game-room .plant { display: none; }
+    .stage.is-game-room .room-title { left: 50%; color: #536f56; transform: translateX(-50%); }
     .stage::before {
       position: absolute;
       z-index: -1;
@@ -547,6 +557,14 @@
       box-shadow: 27px 0 #e99491a8;
       content: "";
     }
+    .actor.iwan .face b {
+      top: 11px;
+      left: 10px;
+      width: 14px;
+      height: 7px;
+      border-bottom: 2px solid #a85852;
+      border-radius: 0 0 50% 50%;
+    }
     .actor.iwan .ornament {
       position: absolute;
       z-index: 4;
@@ -569,15 +587,59 @@
     }
     .actor.koyoshi { width: 80px; height: 146px; }
     .actor.koyoshi .head { top: 2px; left: 12px; width: 56px; height: 56px; border-radius: 48%; }
-    .actor.koyoshi .hair { top: -4px; left: 5px; width: 70px; height: 38px; border-radius: 50% 50% 25% 25%; }
-    .actor.koyoshi .hair::before, .actor.koyoshi .hair::after { display: none; }
+    .actor.koyoshi .hair { z-index: 2; top: -1px; left: 5px; width: 70px; height: 58px; border: 2px solid #142532; border-radius: 50% 50% 38% 38%; background: linear-gradient(140deg, #243644, #111e29 74%); }
+    .actor.koyoshi .hair::before { top: 17px; left: -3px; width: 72px; height: 7px; border-radius: 4px; background: linear-gradient(90deg, #172733, #354a55 48%, #172733); box-shadow: 0 2px 3px #101a20aa; }
+    .actor.koyoshi .hair::after { top: 18px; right: -7px; left: auto; width: 12px; height: 20px; border-radius: 0 0 8px 3px; background: #253947; transform: rotate(-18deg); }
     .actor.koyoshi .face { top: 25px; left: 23px; }
     .actor.koyoshi .face b { top: 11px; }
     .actor.koyoshi .glasses { display: none; }
-    .actor.koyoshi .body { top: 58px; left: 17px; width: 46px; height: 52px; border-radius: 13px; background: #7191a0; }
+    .actor.koyoshi .body { top: 58px; left: 17px; width: 46px; height: 52px; border: 1px solid #142638; border-radius: 13px; background: linear-gradient(145deg, transparent 0 42%, #d2bd7a 43% 52%, transparent 53%), linear-gradient(180deg, #263b50, #172735); }
+    .actor.koyoshi .body::before { position: absolute; top: 4px; left: 2px; width: 40px; height: 6px; border-radius: 3px; background: #d3b86e; box-shadow: 0 2px 3px #16243266; content: ""; }
+    .actor.koyoshi .body::after { position: absolute; top: 5px; left: 18px; width: 8px; height: 5px; border: 1px solid #886d35; border-radius: 2px; background: #e7cf86; content: ""; }
+    .actor.koyoshi .face b { display: none; }
+    .actor.koyoshi .face::after { position: absolute; top: 10px; left: 1px; width: 32px; height: 10px; border-radius: 2px 2px 10px 10px; background: #213546; clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%); content: ""; }
     .actor.koyoshi .legs { top: 108px; left: 24px; }
     .actor.koyoshi .shoes { top: 130px; left: 18px; }
+    .actor.koyoshi .toy-katana {
+      position: absolute;
+      z-index: 3;
+      top: 55px;
+      left: 60px;
+      display: block;
+      width: 10px;
+      height: 78px;
+      border: 1px solid #708c91;
+      border-radius: 6px 6px 2px 2px;
+      background: linear-gradient(90deg, #9ec7cb, #fff 48%, #9ec7cb);
+      box-shadow: 1px 3px 4px #34444a55;
+      transform: rotate(38deg);
+      transform-origin: center bottom;
+    }
+    .actor.koyoshi.is-wielding .toy-katana { animation: toy-swing .55s ease-in-out infinite alternate; }
+    .actor.koyoshi.is-game-room .toy-katana { display: none; animation: none; }
+    .actor.koyoshi:not(.is-game-room) .toy-katana { display: block; visibility: visible; }
+    .actor.koyoshi .toy-katana::before {
+      position: absolute;
+      bottom: 11px;
+      left: -8px;
+      width: 22px;
+      height: 5px;
+      border-radius: 3px;
+      background: #d5ad63;
+      content: "";
+    }
+    .actor.koyoshi .toy-katana::after {
+      position: absolute;
+      bottom: -9px;
+      left: -3px;
+      width: 11px;
+      height: 15px;
+      border-radius: 2px;
+      background: repeating-linear-gradient(135deg, #715245 0 2px, #d6bd99 2px 4px);
+      content: "";
+    }
     .actor.koyoshi.is-silly { animation: silly-bounce .8s ease-in-out; }
+    @keyframes toy-swing { to { transform: rotate(-24deg); } }
     @keyframes silly-bounce {
       0%, 100% { transform: translate(-50%, -100%) scale(.8) rotate(0); }
       30% { transform: translate(-50%, -100%) scale(.8) rotate(-8deg) translateY(-4px); }
@@ -611,50 +673,29 @@
     .penguin {
       position: absolute;
       z-index: 3;
-      width: 54px;
-      height: 62px;
-      display: grid;
-      place-items: center;
-      border: 2px solid #263a3e;
-      border-radius: 48% 48% 44% 44%;
-      color: #293d42;
-      background: radial-gradient(ellipse at 50% 63%, #fff8ec 0 37%, transparent 38%), radial-gradient(ellipse at 32% 28%, #62767a 0 2%, transparent 3%), #354b50;
-      box-shadow: inset 3px 4px 7px #ffffff28, inset -4px -5px 9px #172a2c2b, 0 8px 12px #3f3c322e;
-      font-size: 9px;
+      width: 60px;
+      height: 70px;
+      padding: 0;
+      border: 0;
+      background: transparent;
       cursor: pointer;
       transform: translate(-50%, -100%);
       transition: transform .2s;
     }
-    .penguin::before {
-      position: absolute;
-      z-index: 2;
-      top: 25px;
-      left: 22px;
-      width: 0;
-      height: 0;
-      border-top: 6px solid #eaa55a;
-      border-right: 5px solid transparent;
-      border-left: 5px solid transparent;
-      content: "";
-    }
-    .penguin::after {
-      position: absolute;
-      z-index: -1;
-      bottom: -5px;
-      left: 7px;
-      width: 36px;
-      height: 9px;
-      border-radius: 50% 50% 45% 45%;
-      background: linear-gradient(90deg, #d89150 0 43%, transparent 44% 55%, #d89150 56%);
-      content: "";
-    }
     .penguin:hover { transform: translate(-50%, -105%) rotate(-5deg); }
-    .penguin .penguin-eyes { position: absolute; z-index: 2; top: 18px; left: 18px; color: #26363a; font-size: 10px; letter-spacing: 7px; }
-    .penguin .penguin-belly { position: absolute; top: 28px; left: 13px; width: 25px; height: 26px; border-radius: 50% 50% 44% 44%; background: #fff8ec; }
-    .penguin .penguin-wing { position: absolute; z-index: 1; top: 28px; width: 12px; height: 22px; border-radius: 50%; background: #304448; }
-    .penguin .penguin-wing.left { left: -5px; transform: rotate(-18deg); }
-    .penguin .penguin-wing.right { right: -5px; transform: rotate(18deg); }
-    .penguin .penguin-scarf { position: absolute; z-index: 2; top: 34px; left: 5px; width: 40px; height: 7px; border-radius: 4px; background: #e88e79; box-shadow: 0 1px 2px #172a2c55; }
+    .penguin .penguin-body { position: absolute; inset: 17px 3px 5px; border: 2px solid #263a3e; border-radius: 48% 48% 44% 44%; background: linear-gradient(145deg, #40595d, #2c4145 75%); box-shadow: inset 3px 5px 7px #ffffff28, inset -4px -5px 9px #172a2c2b, 0 7px 10px #3f3c322e; }
+    .penguin .penguin-head { position: absolute; z-index: 2; top: 2px; left: 10px; width: 40px; height: 39px; border: 2px solid #263a3e; border-bottom: 0; border-radius: 50% 50% 43% 43%; background: linear-gradient(145deg, #40595d, #30464a); }
+    .penguin .penguin-head::after { position: absolute; top: 23px; left: 3px; width: 5px; height: 3px; border-radius: 50%; background: #e8a18e; box-shadow: 24px 0 #e8a18e; content: ""; }
+    .penguin .penguin-eyes { position: absolute; z-index: 4; top: 14px; left: 19px; display: flex; gap: 8px; }
+    .penguin .penguin-eyes i { position: relative; width: 5px; height: 7px; border-radius: 50%; background: #fff8ec; box-shadow: 0 0 2px #fff8ec; }
+    .penguin .penguin-eyes i::after { position: absolute; top: 2px; left: 2px; width: 2px; height: 3px; border-radius: 50%; background: #26363a; content: ""; }
+    .penguin .penguin-beak { position: absolute; z-index: 5; top: 26px; left: 25px; width: 10px; height: 8px; background: #eaa55a; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+    .penguin .penguin-belly { position: absolute; z-index: 2; top: 37px; left: 16px; width: 28px; height: 27px; border-radius: 50% 50% 44% 44%; background: #fff8ec; box-shadow: inset 0 2px 3px #d4d0c4; }
+    .penguin .penguin-wing { position: absolute; z-index: 1; top: 35px; width: 13px; height: 25px; border-radius: 50%; background: #304448; }
+    .penguin .penguin-wing.left { left: -1px; transform: rotate(-24deg); }
+    .penguin .penguin-wing.right { right: -1px; transform: rotate(24deg); }
+    .penguin .penguin-feet { position: absolute; z-index: 3; bottom: 1px; left: 12px; width: 36px; height: 6px; border-radius: 50%; background: linear-gradient(90deg, #d89150 0 43%, transparent 44% 55%, #d89150 56%); }
+    .penguin .penguin-scarf { position: absolute; z-index: 4; top: 40px; left: 6px; width: 48px; height: 8px; border-radius: 4px; background: #e88e79; box-shadow: 0 1px 2px #172a2c55; }
     .penguin[data-scarf="gold"] .penguin-scarf { background: #e2b95e; }
     .penguin[data-scarf="blue"] .penguin-scarf { background: #83aeba; }
     .soccer-ball {
@@ -673,6 +714,24 @@
       transition: transform .2s;
     }
     .soccer-ball:hover { transform: scale(1.12) rotate(15deg); }
+    .soccer-goal { z-index: 2; width: 37%; height: 24%; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; transform: translateX(-50%); cursor: crosshair; }
+    .soccer-goal::after { content: none; }
+    .soccer-goal:hover { filter: none; transform: translateX(-50%); }
+    .goal-net { position: absolute; inset: 4px 5px 0; border: 2px dashed #f8f3e5b5; background: repeating-linear-gradient(0deg, transparent 0 9px, #f8f3e566 10px), repeating-linear-gradient(90deg, transparent 0 12px, #f8f3e566 13px); }
+    .goal-frame { position: absolute; inset: 0; border: 5px solid #fff9eb; border-bottom: 0; border-radius: 5px 5px 0 0; box-shadow: 0 2px 3px #50483255; }
+    .aim-reticle { position: absolute; z-index: 6; width: 22px; height: 22px; border: 2px solid #df765c; border-radius: 50%; box-shadow: 0 0 0 2px #fffdf8b8, 0 2px 6px #263a3e66; pointer-events: none; transform: translate(-50%, -50%); }
+    .aim-reticle::before, .aim-reticle::after { position: absolute; top: 8px; left: -5px; width: 28px; border-top: 2px solid #df765c; content: ""; }
+    .aim-reticle::after { top: -5px; left: 8px; width: 0; height: 28px; border-top: 0; border-left: 2px solid #df765c; }
+    .soccer-hud { position: absolute; z-index: 7; top: 63%; left: 50%; display: flex; align-items: center; gap: 9px; max-width: calc(100% - 20px); padding: 6px 9px; border: 1px solid #e7e2d8; border-radius: 8px; background: #fffdf8ed; box-shadow: 0 4px 12px #48513d20; font-size: 11px; transform: translateX(-50%); }
+    .soccer-hud[hidden], .aim-reticle[hidden] { display: none; }
+    .soccer-hud button { min-height: 34px; padding: 0 13px; border: 0; border-radius: 6px; color: white; background: var(--green); font-weight: 700; cursor: pointer; }
+    .soccer-score { white-space: nowrap; color: #64716a; font-variant-numeric: tabular-nums; }
+    .shooting-ball { z-index: 5; }
+    .shooting-ball { width: 54px; margin: -27px 0 0 -27px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    .soccer-goal.is-scored .goal-frame { border-color: #e8bf68; }
+    .soccer-goal.is-scored { filter: drop-shadow(0 0 8px #f2c56b); }
+    .music-credit { color: #75817a; font-size: 10px; text-decoration: underline; text-underline-offset: 2px; }
+    .music-credit[hidden] { display: none; }
 
     .speech {
       position: absolute;
@@ -797,14 +856,17 @@
       .profile h2 { font-size: 17px; }
       .profile .role { font-size: 9px; }
       .status-line { margin-top: 10px; font-size: 10px; }
+      .profile, .profile-row > div, .status-line span:last-child { min-width: 0; }
+      .profile .role, .status-line span:last-child { overflow-wrap: anywhere; }
       .meters { align-content: center; padding: 11px; border-bottom: 1px solid var(--line); }
       .quick-actions { grid-column: 1 / -1; padding: 12px; border-bottom: 0; }
       .quick-actions .section-heading { margin-bottom: 8px; }
       .action-list { grid-template-columns: repeat(4, 1fr); gap: 5px; }
       .action-button { min-height: 36px; justify-content: center; padding: 0 4px; font-size: 10px; }
       .action-button span { font-size: 15px; }
+      .phone-mode-button { display: inline-flex; }
       .diary { display: none; }
-      .bottom-note { font-size: 10px; }
+      .bottom-note { flex-wrap: wrap; font-size: 10px; }
       .key-hint { display: none; }
     }
     @media (max-width: 420px) {
@@ -817,7 +879,42 @@
       .stage-wrap { height: clamp(290px, 49svh, 390px); }
       .actor { scale: .88; }
       .action-button { gap: 3px; font-size: 9px; }
+      .soccer-hud { gap: 5px; padding: 5px; font-size: 10px; }
+      .soccer-hud button { min-height: 32px; padding: 0 9px; }
     }
+    @media (max-height: 500px) and (orientation: landscape) {
+      .app { width: 100%; height: 100svh; min-height: 0; padding: 6px 12px; gap: 6px; overflow: hidden; }
+      .topbar { min-height: 34px; flex: none; }
+      .brand { gap: 8px; }
+      .brand-mark { width: 31px; height: 31px; border-radius: 10px; font-size: 18px; }
+      .brand h1 { font-size: 17px; }
+      .brand p { display: none; }
+      .weather, .icon-button { height: 32px; }
+      .icon-button { width: 34px; }
+      .phone-mode-button { display: inline-flex; }
+      .room-nav { width: 100%; min-height: 33px; flex: none; padding: 2px 4px; gap: 4px; }
+      .room-tab { min-height: 27px; padding: 0 9px; font-size: 11px; }
+      .content { min-height: 0; display: grid; flex: 1; grid-template-columns: minmax(0, 1fr) 205px; gap: 8px; }
+      .stage-wrap { min-height: 0; height: auto; border-radius: 12px; }
+      .side-panel { min-height: 0; display: flex; overflow: auto; border-radius: 12px; }
+      .profile, .quick-actions, .diary { padding: 8px 10px; }
+      .profile { border-bottom: 1px solid var(--line); }
+      .profile-row { gap: 8px; }
+      .portrait { width: 32px; height: 32px; border-radius: 10px; font-size: 18px; }
+      .profile h2 { font-size: 16px; }
+      .profile .role { display: none; }
+      .status-line { margin-top: 7px; font-size: 10px; }
+      .meters { gap: 8px; padding: 8px 10px; }
+      .quick-actions { border-bottom: 0; }
+      .quick-actions .section-heading { margin-bottom: 6px; }
+      .action-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+      .action-button { min-width: 0; min-height: 28px; padding: 0 5px; font-size: 10px; }
+      .diary { display: none; }
+      .bottom-note { min-height: 13px; flex: none; gap: 8px; font-size: 9px; }
+      .bottom-note > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .key-hint { display: none; }
+    }
+    :fullscreen .phone-mode-button { display: inline-flex; }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
     }
@@ -837,6 +934,7 @@
         <div class="weather"><span aria-hidden="true">☀</span><span id="weatherText">Montreal · 18°</span></div>
         <button class="icon-button" id="soundButton" type="button" aria-label="Turn cozy jazz on" title="Turn cozy jazz on">♫</button>
         <button class="icon-button" id="resetButton" type="button" aria-label="Reset the day" title="Reset the day">↺</button>
+        <button class="icon-button phone-mode-button" id="phoneModeButton" type="button" aria-label="Enter landscape fullscreen" title="Enter landscape fullscreen">⛶</button>
       </div>
     </header>
 
@@ -845,6 +943,7 @@
       <button class="room-tab" type="button" data-room="bedroom" aria-pressed="false">Bedroom</button>
       <button class="room-tab" type="button" data-room="study" aria-pressed="false">Study</button>
       <button class="room-tab" type="button" data-room="kitchen" aria-pressed="false">Kitchen</button>
+      <button class="room-tab" type="button" data-room="game" aria-pressed="false">Game room</button>
     </nav>
 
     <section class="content" aria-label="IWan's condo">
@@ -857,11 +956,17 @@
           <div class="wall-art" aria-hidden="true">bonjour</div>
           <div class="lamp" aria-hidden="true"></div>
           <div id="roomObjects"></div>
+          <div class="aim-reticle" id="aimReticle" hidden aria-hidden="true"></div>
+          <div class="soccer-hud" id="soccerHud" hidden>
+            <span id="soccerPrompt">Tap the scene to aim</span>
+            <span class="soccer-score" id="soccerScore">Goals 0 · Shots 0</span>
+            <button id="shootButton" type="button">Shoot</button>
+          </div>
           <button class="actor iwan" id="iwan" type="button" aria-label="IWan, click to interact" style="left:53%;top:76%">
             <span class="hair"></span><span class="head"></span><span class="face"><i></i><i></i><b></b></span><span class="glasses"><span class="lens"></span><span class="lens"></span></span><span class="ornament" aria-hidden="true">✿</span><span class="body"></span><span class="legs"></span><span class="shoes"></span>
           </button>
           <button class="actor koyoshi" id="koyoshi" type="button" aria-label="Koyoshi, click to talk" style="left:78%;top:76%">
-            <span class="hair"></span><span class="head"></span><span class="face"><i></i><i></i><b></b></span><span class="glasses"></span><span class="body"></span><span class="legs"></span><span class="shoes"></span>
+            <span class="hair"></span><span class="head"></span><span class="face"><i></i><i></i><b></b></span><span class="glasses"></span><span class="body"></span><span class="legs"></span><span class="shoes"></span><span class="toy-katana" aria-hidden="true"></span>
           </button>
           <div class="plant" aria-hidden="true">🪴</div>
         </div>
@@ -901,8 +1006,10 @@
 
     <footer class="bottom-note">
       <span><strong>Make yourself at home.</strong> Click anywhere to wander, or tap something interesting.</span>
+      <a class="music-credit" id="musicCredit" href="https://commons.wikimedia.org/wiki/File:Short_jazz_improvisation_for_solo_piano.wav" target="_blank" rel="noreferrer" hidden>Jazz piano: Dieter Leckschat · CC BY-SA 4.0</a>
       <span class="key-hint"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to walk</span>
     </footer>
+    <audio id="houseMusic" src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Short_jazz_improvisation_for_solo_piano.wav" preload="none" loop></audio>
   </main>
 
   <script>
@@ -918,6 +1025,10 @@
       const cozyBar = document.querySelector("#cozyBar");
       const energyValue = document.querySelector("#energyValue");
       const cozyValue = document.querySelector("#cozyValue");
+      const houseMusic = document.querySelector("#houseMusic");
+      const aimReticle = document.querySelector("#aimReticle");
+      const soccerHud = document.querySelector("#soccerHud");
+      const soccerScore = document.querySelector("#soccerScore");
 
       const rooms = {
         living: {
@@ -937,6 +1048,7 @@
             { kind: "desk", label: "Bedside table", icon: "▤", action: "relax", x: 75, y: 57 },
           ],
           penguins: [[68, 94]],
+          soccerBall: true,
         },
         study: {
           title: "Ideas, notes & one good lamp",
@@ -945,6 +1057,7 @@
             { kind: "chair", label: "Desk chair", icon: "♧", action: "work", x: 68, y: 72 },
           ],
           penguins: [[25, 94], [87, 94]],
+          soccerBall: true,
         },
         kitchen: {
           title: "Something lovely is simmering",
@@ -953,6 +1066,15 @@
             { kind: "counter", label: "Kitchen counter", icon: "🥣", action: "cook", x: 71, y: 63 },
           ],
           penguins: [[52, 94]],
+          soccerBall: true,
+        },
+        game: {
+          title: "Indoor soccer practice",
+          objects: [
+            { kind: "soccer-goal", label: "Aim for the goal", action: "aim", x: 50, y: 35 },
+          ],
+          penguins: [],
+          shootingGame: true,
         },
       };
 
@@ -969,21 +1091,17 @@
       const penguinLines = ["Honk!", "Waddle waddle.", "I am the captain now.", "Have you seen my fish?", "Penguin meeting. Very important."];
       const koyoshiLines = ["I made tea! I only spilled a tiny bit.", "IWan, do you think penguins know it's cold?", "I was helping. This is what helping looks like.", "You look very professor-y today.", "I saved you the last dumpling. Probably."];
       const sillyLines = ["Look, I can moonwalk!", "Koyoshi is practicing his victory dance.", "Was that a penguin? No, it was just me.", "Koyoshi does a very unnecessary little spin."];
-      const musicChannels = [
-        { id: "jazz", title: "Cozy jazz", chords: [[60, 64, 67, 71], [57, 60, 64, 67], [62, 65, 69, 72], [55, 59, 62, 65]] },
-        { id: "postrock", title: "Dreamy post-rock", chords: [[50, 57, 62, 66], [45, 52, 57, 61], [47, 54, 59, 62], [43, 50, 55, 59]] },
-        { id: "jpop", title: "Sunny J-pop", chords: [[60, 64, 67, 72], [55, 59, 62, 67], [57, 60, 64, 69], [53, 57, 60, 65]] },
-      ];
+      const soccerMissLines = ["Wide! I was aiming for the goal's cousin.", "That was a pass to an invisible penguin.", "The ball has chosen a new career.", "I meant to test the wall's defense."];
       let currentRoom = "living";
       let energy = 72;
       let cozy = 68;
       let minutes = 14 * 60 + 30;
       let musicOn = false;
       let audioContext;
-      let musicTimer;
-      let musicBar = 0;
-      let musicChannelIndex = -1;
       let soccerInProgress = false;
+      let soccerGoals = 0;
+      let soccerShots = 0;
+      let soccerAim = { x: 50, y: 47 };
       let koyoshiWanderTimer;
       const walkTimers = new WeakMap();
 
@@ -1024,6 +1142,64 @@
         window.setTimeout(() => bubble.remove(), 3000);
       }
 
+      function getGoalBounds() {
+        const goal = roomObjects.querySelector(".soccer-goal");
+        if (!goal) return null;
+        const stageBounds = stage.getBoundingClientRect();
+        const goalBounds = goal.getBoundingClientRect();
+        return {
+          left: (goalBounds.left - stageBounds.left) / stageBounds.width * 100,
+          top: (goalBounds.top - stageBounds.top) / stageBounds.height * 100,
+          width: goalBounds.width / stageBounds.width * 100,
+          height: goalBounds.height / stageBounds.height * 100,
+        };
+      }
+
+      function setSoccerAim(clientX, clientY) {
+        const bounds = stage.getBoundingClientRect();
+        soccerAim = {
+          x: Math.max(2, Math.min(98, (clientX - bounds.left) / bounds.width * 100)),
+          y: Math.max(4, Math.min(94, (clientY - bounds.top) / bounds.height * 100)),
+        };
+        aimReticle.style.left = `${soccerAim.x}%`;
+        aimReticle.style.top = `${soccerAim.y}%`;
+        aimReticle.hidden = false;
+        document.querySelector("#soccerPrompt").textContent = "Aim set · take your shot";
+      }
+
+      function targetIsGoal(x, y) {
+        const goal = getGoalBounds();
+        if (!goal) return false;
+        return x >= goal.left + goal.width * .08 && x <= goal.left + goal.width * .92
+          && y >= goal.top + goal.height * .08 && y <= goal.top + goal.height * .92;
+      }
+
+      async function animateShootingBall(ball, x, y, startScale = 1, endScale = .38) {
+        const fromX = parseFloat(ball.style.left);
+        const fromY = parseFloat(ball.style.top);
+        const stageBounds = stage.getBoundingClientRect();
+        const animation = ball.animate([
+          { transform: `translate(0, 0) scale(${startScale}) rotate(0)` },
+          { transform: `translate(${(x - fromX) * stageBounds.width / 100}px, ${(y - fromY) * stageBounds.height / 100}px) scale(${endScale}) rotate(560deg)` },
+        ], { duration: 650, easing: "linear", fill: "forwards" });
+        try {
+          await animation.finished;
+        } catch {
+          return false;
+        }
+        if (!ball.isConnected) return false;
+        ball.style.left = `${x}%`;
+        ball.style.top = `${y}%`;
+        animation.cancel();
+        return true;
+      }
+
+      async function resetGameBall() {
+        const ball = roomObjects.querySelector(".shooting-ball");
+        if (!ball) return false;
+        return animateShootingBall(ball, 50, 89, .38, 1);
+      }
+
       function chime() {
         if (!musicOn || !audioContext) return;
         const oscillator = audioContext.createOscillator();
@@ -1037,91 +1213,63 @@
         oscillator.stop(audioContext.currentTime + .12);
       }
 
-      function playJazzNote(midiNote, startTime, duration, volume, waveform = "sine") {
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        oscillator.type = waveform;
-        oscillator.frequency.value = 440 * 2 ** ((midiNote - 69) / 12);
-        gain.gain.setValueAtTime(.0001, startTime);
-        gain.gain.linearRampToValueAtTime(volume, startTime + .025);
-        gain.gain.exponentialRampToValueAtTime(.0001, startTime + duration);
-        oscillator.connect(gain).connect(audioContext.destination);
-        oscillator.start(startTime);
-        oscillator.stop(startTime + duration + .03);
-      }
-
-      function playMusicBar() {
-        const channel = musicChannels[Math.max(0, musicChannelIndex)];
-        const chord = channel.chords[musicBar % channel.chords.length];
-        const start = audioContext.currentTime + .04;
-        if (channel.id === "jazz") {
-          chord.forEach((note) => playJazzNote(note, start, 1.8, .012));
-          playJazzNote(chord[0] - 12, start, 1.2, .025, "triangle");
-          [0, 2, 1, 3].forEach((noteIndex, beat) => {
-            playJazzNote(chord[noteIndex] + 12, start + beat * .48, .34, .018, "triangle");
-          });
-        } else if (channel.id === "postrock") {
-          chord.forEach((note) => playJazzNote(note + 12, start, 2.1, .007));
-          playJazzNote(chord[0] - 12, start, 2.1, .018, "triangle");
-          playJazzNote(chord[2] + 12, start + .72, 1.2, .009);
-          playJazzNote(chord[3] + 12, start + 1.38, .72, .008);
-        } else {
-          chord.forEach((note) => playJazzNote(note, start, 1.55, .009));
-          playJazzNote(chord[0] - 12, start, .48, .022, "triangle");
-          [0, 2, 1, 3, 2, 0, 1, 3].forEach((noteIndex, beat) => {
-            playJazzNote(chord[noteIndex] + 12, start + beat * .235, .2, .015, "triangle");
-          });
-        }
-        musicBar += 1;
-      }
-
       function updateTelevision(television) {
         const picture = television.querySelector(".tv-picture");
         const caption = television.querySelector(".tv-caption");
-        const channel = musicChannels[musicChannelIndex];
-        picture.dataset.channel = channel?.id || "jazz";
-        caption.textContent = channel ? `${channel.title} · ${musicOn ? "ON AIR" : "PAUSED"}` : "Tap to shuffle music";
-        television.setAttribute("aria-label", channel ? `TV showing ${channel.title}; click to shuffle` : "TV; click to shuffle music");
+        picture.dataset.channel = "jazz";
+        caption.textContent = `Cozy jazz · ${musicOn ? "ON AIR" : "PAUSED"}`;
+        television.setAttribute("aria-label", `TV showing cozy jazz; click to ${musicOn ? "pause" : "play"}`);
       }
 
       function setMusicEnabled(enabled) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (enabled && !AudioContextClass) {
-          statusText.textContent = "Audio is not available in this browser";
-          return false;
-        }
         musicOn = enabled;
-        window.clearInterval(musicTimer);
         if (musicOn) {
-          if (musicChannelIndex < 0) musicChannelIndex = 0;
-          audioContext ??= new AudioContextClass();
-          audioContext.resume();
-          musicBar = 0;
-          playMusicBar();
-          musicTimer = window.setInterval(playMusicBar, 2200);
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioContext ??= new AudioContextClass();
+            void audioContext.resume();
+          }
+          houseMusic.play().catch(() => {
+            if (!musicOn) return;
+            setMusicEnabled(false);
+            statusText.textContent = "The jazz recording could not be loaded";
+          });
         } else {
-          audioContext?.suspend();
+          houseMusic.pause();
         }
         document.querySelectorAll(".furniture.television").forEach(updateTelevision);
         const button = document.querySelector("#soundButton");
         button.textContent = musicOn ? "♫" : "♪";
-        button.setAttribute("aria-label", musicOn ? "Pause house music" : "Play house music");
-        button.title = musicOn ? "Pause house music" : "Play house music";
+        button.setAttribute("aria-label", musicOn ? "Pause cozy jazz" : "Play cozy jazz");
+        button.title = musicOn ? "Pause cozy jazz" : "Play cozy jazz";
+        document.querySelector("#musicCredit").hidden = !musicOn;
         return true;
       }
 
-      function shuffleMusicChannel(television) {
-        const options = musicChannels.map((channel, index) => index).filter((index) => index !== musicChannelIndex);
-        musicChannelIndex = options[Math.floor(Math.random() * options.length)];
-        musicBar = 0;
-        if (!musicOn) {
-          setMusicEnabled(true);
-        } else {
-          window.clearInterval(musicTimer);
-          playMusicBar();
-          musicTimer = window.setInterval(playMusicBar, 2200);
+      function updatePhoneModeButton() {
+        const isFullscreen = Boolean(document.fullscreenElement);
+        const button = document.querySelector("#phoneModeButton");
+        button.textContent = isFullscreen ? "×" : "⛶";
+        button.setAttribute("aria-label", isFullscreen ? "Exit fullscreen" : "Enter landscape fullscreen");
+        button.title = isFullscreen ? "Exit fullscreen" : "Enter landscape fullscreen";
+      }
+
+      async function togglePhonePlayMode() {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+          screen.orientation?.unlock?.();
+          return;
         }
-        updateTelevision(television);
+        try {
+          await document.documentElement.requestFullscreen();
+          if (screen.orientation?.lock) {
+            await screen.orientation.lock("landscape-primary");
+          } else {
+            statusText.textContent = "Rotate your phone right for landscape play";
+          }
+        } catch {
+          statusText.textContent = "Rotate your phone right for landscape play";
+        }
       }
 
       function moveTo(target, x, y, callback) {
@@ -1169,6 +1317,7 @@
       function renderRoom(roomName) {
         currentRoom = roomName;
         const room = rooms[roomName];
+        stage.classList.toggle("is-game-room", room.shootingGame);
         document.querySelector("#roomTitle").textContent = room.title;
         stage.setAttribute("aria-label", `${roomName} scene`);
         document.querySelectorAll(".room-tab").forEach((tab) => tab.setAttribute("aria-pressed", String(tab.dataset.room === roomName)));
@@ -1186,6 +1335,8 @@
           if (object.kind === "television") {
             button.innerHTML = "<span class=\"tv-screen\"><span class=\"tv-picture\"></span><span class=\"tv-badge\">TV</span><span class=\"tv-caption\"></span></span>";
             updateTelevision(button);
+          } else if (object.kind === "soccer-goal") {
+            button.innerHTML = "<span class=\"goal-net\"></span><span class=\"goal-frame\"></span>";
           }
           roomObjects.append(button);
         }
@@ -1197,24 +1348,37 @@
           penguin.style.top = `${y}%`;
           penguin.dataset.scarf = ["coral", "gold", "blue"][index % 3];
           penguin.setAttribute("aria-label", `Penguin plush ${index + 1}`);
-          penguin.innerHTML = "<span class=\"penguin-eyes\">• •</span><span class=\"penguin-belly\"></span><span class=\"penguin-wing left\"></span><span class=\"penguin-wing right\"></span><span class=\"penguin-scarf\"></span>";
+          penguin.innerHTML = "<span class=\"penguin-body\"></span><span class=\"penguin-head\"></span><span class=\"penguin-eyes\"><i></i><i></i></span><span class=\"penguin-beak\"></span><span class=\"penguin-belly\"></span><span class=\"penguin-wing left\"></span><span class=\"penguin-wing right\"></span><span class=\"penguin-scarf\"></span><span class=\"penguin-feet\"></span>";
           roomObjects.append(penguin);
         });
-        if (room.soccerBall) {
+        if (room.soccerBall || room.shootingGame) {
           const ball = document.createElement("button");
-          ball.className = "soccer-ball";
+          ball.className = `soccer-ball${room.shootingGame ? " shooting-ball" : ""}`;
           ball.type = "button";
-          ball.style.left = "59%";
-          ball.style.top = "92%";
-          ball.setAttribute("aria-label", "Kick the soccer ball");
+          ball.style.left = room.shootingGame ? "50%" : "59%";
+          ball.style.top = room.shootingGame ? "89%" : "92%";
+          ball.setAttribute("aria-label", room.shootingGame ? "Shoot toward the goal" : "Kick the soccer ball");
           roomObjects.append(ball);
         }
-        koyoshi.hidden = roomName === "bedroom";
+        soccerHud.hidden = !room.shootingGame;
+        aimReticle.hidden = !room.shootingGame;
+        koyoshi.classList.toggle("is-game-room", room.shootingGame);
+        koyoshi.classList.remove("is-wielding", "is-silly");
+        if (room.shootingGame) {
+          soccerGoals = 0;
+          soccerShots = 0;
+          soccerAim = { x: 50, y: 47 };
+          aimReticle.style.left = `${soccerAim.x}%`;
+          aimReticle.style.top = `${soccerAim.y}%`;
+          document.querySelector("#soccerPrompt").textContent = "Tap the scene to aim";
+          soccerScore.textContent = "Goals 0 · Shots 0";
+        }
         const startingPositions = {
           living: [53, 96, 78, 96],
           bedroom: [62, 96, 80, 96],
           study: [48, 96, 81, 96],
           kitchen: [51, 96, 79, 96],
+          game: [42, 96, 69, 96],
         }[roomName];
         iwan.style.left = `${startingPositions[0]}%`;
         iwan.style.top = `${startingPositions[1]}%`;
@@ -1253,6 +1417,72 @@
         animation.cancel();
       }
 
+      async function finishGameShot(shooter, targetX, targetY, scored) {
+        const ball = roomObjects.querySelector(".shooting-ball");
+        const goal = roomObjects.querySelector(".soccer-goal");
+        if (!ball || !goal) return false;
+        ball.style.left = "50%";
+        ball.style.top = "89%";
+        const completed = await animateShootingBall(ball, targetX, targetY);
+        if (!completed || !goal.isConnected) return false;
+        soccerShots += 1;
+        if (scored) soccerGoals += 1;
+        soccerScore.textContent = `Goals ${soccerGoals} · Shots ${soccerShots}`;
+        goal.classList.toggle("is-scored", scored);
+        window.setTimeout(() => goal.isConnected && goal.classList.remove("is-scored"), 850);
+        if (scored) {
+          say(shooter, shooter === koyoshi ? "Goal! I meant to do that!" : "Goal! Koyoshi is taking notes.");
+          statusText.textContent = `${shooter === koyoshi ? "Koyoshi" : "IWan"} scores!`;
+        } else {
+          say(koyoshi, soccerMissLines[Math.floor(Math.random() * soccerMissLines.length)]);
+          statusText.textContent = `${shooter === koyoshi ? "Koyoshi" : "IWan"} misses; Koyoshi has commentary`;
+        }
+        addDiary(`${shooter === koyoshi ? "Koyoshi" : "IWan"} ${scored ? "scores" : "misses"} at the soccer pitch.`);
+        return true;
+      }
+
+      function getKoyoshiTarget(scored) {
+        const goal = getGoalBounds();
+        if (!goal) return { x: 50, y: 47 };
+        if (scored) {
+          return {
+            x: goal.left + goal.width * (.2 + Math.random() * .6),
+            y: goal.top + goal.height * (.2 + Math.random() * .6),
+          };
+        }
+        const outsideX = Math.random() < .5;
+        return outsideX
+          ? { x: Math.max(2, Math.min(98, goal.left + goal.width * (Math.random() < .5 ? -.12 : 1.12))), y: goal.top + goal.height * .5 }
+          : { x: goal.left + goal.width * .5, y: goal.top + goal.height * (Math.random() < .5 ? -.12 : 1.12) };
+      }
+
+      async function shootAtGoal() {
+        if (currentRoom !== "game" || soccerInProgress) return;
+        soccerInProgress = true;
+        const shootButton = document.querySelector("#shootButton");
+        shootButton.disabled = true;
+        try {
+          moveTo(iwan, 43, 96);
+          await waitForWalk();
+          const userScored = targetIsGoal(soccerAim.x, soccerAim.y);
+          if (!await finishGameShot(iwan, soccerAim.x, soccerAim.y, userScored)) return;
+          await new Promise((resolve) => window.setTimeout(resolve, 750));
+          if (currentRoom !== "game") return;
+          await resetGameBall();
+          if (currentRoom !== "game") return;
+          moveTo(koyoshi, 67, 96);
+          await waitForWalk();
+          const koyoshiScored = Math.random() < .5;
+          const koyoshiTarget = getKoyoshiTarget(koyoshiScored);
+          await finishGameShot(koyoshi, koyoshiTarget.x, koyoshiTarget.y, koyoshiScored);
+          await new Promise((resolve) => window.setTimeout(resolve, 550));
+          if (currentRoom === "game") await resetGameBall();
+        } finally {
+          soccerInProgress = false;
+          shootButton.disabled = false;
+        }
+      }
+
       async function playSoccer(ball) {
         if (soccerInProgress) return;
         soccerInProgress = true;
@@ -1269,11 +1499,13 @@
           if (!ball.isConnected) return;
           say(koyoshi, "Nice pass! My turn!");
 
-          const returnX = Math.max(12, Math.min(87, parseFloat(iwan.style.left) + 2));
-          moveTo(iwan, returnX, 97);
-          await Promise.all([waitForWalk(), animateBallTo(ball, returnX + 3)]);
+          const returnX = Math.max(7, Math.min(93, parseFloat(iwan.style.left)));
+          const kickSide = returnX < passX ? 4 : -4;
+          moveTo(koyoshi, Math.max(8, Math.min(92, passX + kickSide)), 97);
+          await Promise.all([waitForWalk(), animateBallTo(ball, returnX)]);
           if (!ball.isConnected) return;
-          say(iwan, "Right back to you!");
+          say(koyoshi, "Right back to you!");
+          say(iwan, "Thanks, Koyoshi!");
           statusText.textContent = "Passing the ball with Koyoshi";
         } finally {
           soccerInProgress = false;
@@ -1283,12 +1515,27 @@
       function scheduleKoyoshiWander() {
         window.clearTimeout(koyoshiWanderTimer);
         koyoshiWanderTimer = window.setTimeout(() => {
-          if (!koyoshi.hidden && !soccerInProgress) {
+          if (!koyoshi.hidden && !soccerInProgress && currentRoom !== "game") {
             const x = 18 + Math.random() * 67;
             moveTo(koyoshi, x, 96, () => {
-              koyoshi.classList.add("is-silly");
-              say(koyoshi, sillyLines[Math.floor(Math.random() * sillyLines.length)]);
-              window.setTimeout(() => koyoshi.classList.remove("is-silly"), 850);
+              if (currentRoom === "game") return;
+              if (Math.random() < .28) {
+                koyoshi.classList.add("is-wielding");
+                say(koyoshi, "En garde! The rug is my sworn rival!");
+                if (Math.random() < .32) {
+                  window.setTimeout(() => {
+                    if (currentRoom === "game") return;
+                    koyoshi.classList.add("is-silly");
+                    say(koyoshi, "Ow! My own toy katana bonked me. Victory is awkward.");
+                    statusText.textContent = "Koyoshi is dramatically fine after a toy-sword mishap";
+                  }, 650);
+                }
+                window.setTimeout(() => koyoshi.classList.remove("is-wielding", "is-silly"), 2400);
+              } else {
+                koyoshi.classList.add("is-silly");
+                say(koyoshi, sillyLines[Math.floor(Math.random() * sillyLines.length)]);
+                window.setTimeout(() => koyoshi.classList.remove("is-silly"), 850);
+              }
             });
           }
           scheduleKoyoshiWander();
@@ -1303,7 +1550,11 @@
       }));
 
       stage.addEventListener("click", (event) => {
-        if (event.target.closest(".furniture, .penguin, .actor")) return;
+        if (event.target.closest(".furniture, .penguin, .actor, .soccer-ball, .soccer-hud")) return;
+        if (currentRoom === "game") {
+          setSoccerAim(event.clientX, event.clientY);
+          return;
+        }
         const bounds = stage.getBoundingClientRect();
         const x = ((event.clientX - bounds.left) / bounds.width) * 100;
         const y = ((event.clientY - bounds.top) / bounds.height) * 100;
@@ -1312,14 +1563,20 @@
       });
 
       roomObjects.addEventListener("click", (event) => {
+        const goal = event.target.closest(".soccer-goal");
+        if (goal) {
+          setSoccerAim(event.clientX, event.clientY);
+          return;
+        }
         const ball = event.target.closest(".soccer-ball");
         if (ball) {
-          void playSoccer(ball);
+          if (currentRoom === "game") void shootAtGoal();
+          else void playSoccer(ball);
           return;
         }
         const television = event.target.closest(".furniture.television");
         if (television) {
-          shuffleMusicChannel(television);
+          setMusicEnabled(!musicOn);
           chooseAction("watch", television);
           return;
         }
@@ -1360,6 +1617,9 @@
       document.querySelectorAll(".action-button").forEach((button) => button.addEventListener("click", () => chooseAction(button.dataset.action)));
 
       document.querySelector("#soundButton").addEventListener("click", () => setMusicEnabled(!musicOn));
+      document.querySelector("#shootButton").addEventListener("click", () => void shootAtGoal());
+      document.querySelector("#phoneModeButton").addEventListener("click", () => void togglePhonePlayMode());
+      document.addEventListener("fullscreenchange", updatePhoneModeButton);
 
       document.querySelector("#resetButton").addEventListener("click", () => {
         minutes = 14 * 60 + 30;
